@@ -11,16 +11,18 @@ public class Grid : MonoBehaviour
     public float fDistanceBetweenNodes;//The distance that the squares will spawn from eachother.
     [SerializeField] private GameObject pathRender;
 
-    Node[,] NodeArray;//The array of nodes that the A Star algorithm uses.
+    private Node[,] NodeArray;//The array of nodes that the A Star algorithm uses.
     public List<Node> FinalPath;//The completed path that the red line will be drawn along
 
-
-    float fNodeDiameter;//Twice the amount of the radius (Set in the start function)
-    int iGridSizeX, iGridSizeY;//Size of the Grid in Array units.
-
+    private Vector3 pathPosition;
+    private float fNodeDiameter;//Twice the amount of the radius (Set in the start function)
+    private int iGridSizeX, iGridSizeY;//Size of the Grid in Array units.
+    private GameObject _gridDebuggerParent;
 
     private void Start()//Ran once the program starts
     {
+        _gridDebuggerParent = Instantiate(new GameObject("DebuggerPath"), Vector3.zero, Quaternion.identity, transform);
+        _gridDebuggerParent.SetActive(false);
         fNodeDiameter = fNodeRadius * 2;//Double the radius to get diameter
         iGridSizeX = Mathf.RoundToInt(vGridWorldSize.x / fNodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
         iGridSizeY = Mathf.RoundToInt(vGridWorldSize.y / fNodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
@@ -117,11 +119,6 @@ public class Grid : MonoBehaviour
         return NodeArray[ix, iy];
     }
 
-
-
-
-    //Function that draws the wireframe
-    private Vector3 pathPosition;
     public void DrawPath()
     {
 
@@ -139,10 +136,16 @@ public class Grid : MonoBehaviour
                 {
                     pathPosition = n.vPosition;
                     pathPosition.y = 0.02f;
-                    Instantiate(pathRender, pathPosition, Quaternion.identity, transform);
+                    Instantiate(pathRender, pathPosition, Quaternion.identity, _gridDebuggerParent.transform);
                 }
             }
         }
+    }
+
+    public void ShowPath()
+    {
+        bool isActive = !_gridDebuggerParent.activeSelf;
+        _gridDebuggerParent.SetActive(isActive);
     }
 
 
