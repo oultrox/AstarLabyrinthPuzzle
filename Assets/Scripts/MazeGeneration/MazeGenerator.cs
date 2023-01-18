@@ -14,7 +14,7 @@ public class MazeGenerator : MonoBehaviour
     private List<MazeNode> _nodes;
     
 
-    private void Start()
+    private void Awake()
     {
         GenerateMaze(_mazeSize);
         InitializePlayer();
