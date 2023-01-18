@@ -5,11 +5,11 @@ using UnityEngine;
 public class Grid : MonoBehaviour
 {
 
-    public Transform StartPosition;//This is where the program will start the pathfinding from.
     public LayerMask WallMask;//This is the mask that the program will look for when trying to find obstructions to the path.
     public Vector2 vGridWorldSize;//A vector2 to store the width and height of the graph in world units.
     public float fNodeRadius;//This stores how big each square on the graph will be
     public float fDistanceBetweenNodes;//The distance that the squares will spawn from eachother.
+    [SerializeField] private GameObject pathRender;
 
     Node[,] NodeArray;//The array of nodes that the A Star algorithm uses.
     public List<Node> FinalPath;//The completed path that the red line will be drawn along
@@ -118,41 +118,32 @@ public class Grid : MonoBehaviour
     }
 
 
-    #region Gizmos
-    //Function that draws the wireframe
-    private void OnDrawGizmos()
-    {
 
-        Gizmos.DrawWireCube(transform.position, new Vector3(vGridWorldSize.x, 1, vGridWorldSize.y));//Draw a wire cube with the given dimensions from the Unity inspector
+
+    //Function that draws the wireframe
+    private Vector3 pathPosition;
+    public void DrawPath()
+    {
 
         if (NodeArray != null)//If the grid is not empty
         {
             foreach (Node n in NodeArray)//Loop through every node in the grid
             {
-                if (n.bIsWall)//If the current node is a wall node
+                //If the final path is not empty
+                if (FinalPath == null)
                 {
-                    Gizmos.color = Color.white;//Set the color of the node
+                    continue;
                 }
-                else
+                
+                if (FinalPath.Contains(n))//If the current node is in the final path
                 {
-                    Gizmos.color = Color.yellow;//Set the color of the node
+                    pathPosition = n.vPosition;
+                    pathPosition.y = 0.02f;
+                    Instantiate(pathRender, pathPosition, Quaternion.identity, transform);
                 }
-
-
-                if (FinalPath != null)//If the final path is not empty
-                {
-                    if (FinalPath.Contains(n))//If the current node is in the final path
-                    {
-                        Gizmos.color = Color.red;//Set the color of that node
-                    }
-
-                }
-
-
-                Gizmos.DrawCube(n.vPosition, Vector3.one * (fNodeDiameter - fDistanceBetweenNodes));//Draw the node at the position of the node.
             }
         }
     }
-    #endregion Gizmos
+
 
 }

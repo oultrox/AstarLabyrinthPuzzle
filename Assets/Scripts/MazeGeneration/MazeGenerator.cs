@@ -11,8 +11,11 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField] private GameObject _player;
     [SerializeField] private GameObject _treasure;
 
+
     private List<MazeNode> _nodes;
-    
+
+    public GameObject Player { get => _player; set => _player = value; }
+    public GameObject Treasure { get => _treasure; set => _treasure = value; }
 
     private void Awake()
     {
@@ -135,13 +138,13 @@ public class MazeGenerator : MonoBehaviour
 
     private void InitializePlayer()
     {
-        Instantiate(_player, _nodes[0].transform.position, Quaternion.identity);
+        _player = Instantiate(_player, _nodes[0].transform.position, Quaternion.identity);
     }
 
     private void InitializeTreasure()
     {
         int lastIndex = _nodes.Count - 1;
-        Instantiate(_treasure, _nodes[lastIndex].transform.position, Quaternion.identity);
+        _treasure = Instantiate(_treasure, _nodes[lastIndex].transform.position, Quaternion.identity);
     }
 
 }
