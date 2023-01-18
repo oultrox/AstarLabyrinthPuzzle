@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class MazePathFinder : MonoBehaviour
 {
-    [SerializeField] private MazeGenerator _mazeGenerator;
+    private MazeGenerator _mazeGenerator;
     
-    Grid _gridReference;//For referencing the grid class
+    [SerializeField] private Grid _gridReference;//For referencing the grid class
     private Transform _startPosition;//Starting position to pathfind from
     private Transform _targetPosition;//Starting position to pathfind to
     private bool isGenerated = false;
     
     private void Awake()
     {
-        _gridReference = GetComponent<Grid>();//Get a reference to the game manager
+        _mazeGenerator = GetComponent<MazeGenerator>();//Get a reference to the game manager
     }
 
     private void Start()//When the program starts

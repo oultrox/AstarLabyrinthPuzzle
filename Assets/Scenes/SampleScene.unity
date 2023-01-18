@@ -305,6 +305,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &560854645 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7360337442566816745, guid: 726239688167ce8438680b71b8ebb942, type: 3}
+  m_PrefabInstance: {fileID: 7360337441767262984}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &900170316
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,10 +346,34 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7360337442566816746, guid: 726239688167ce8438680b71b8ebb942, type: 3}
   m_PrefabInstance: {fileID: 7360337441767262984}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 560854645}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57a743722ee79ae4e9e557d8bf906e7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &996381480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560854645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e604479790f4bca48992e6b54da16c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gridReference: {fileID: 1690947409}
+--- !u!114 &1690947409 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4927258138104772966, guid: 044df78c86564d54d946461fee34ef0a, type: 3}
+  m_PrefabInstance: {fileID: 4927258138697726802}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bb9bb6287eb6274c91fa109c7deddeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1932056971
@@ -481,9 +510,9 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4927258138104772961, guid: 044df78c86564d54d946461fee34ef0a, type: 3}
       propertyPath: m_Name
-      value: PathfindingManager
+      value: Grid
       objectReference: {fileID: 0}
-    - target: {fileID: 4927258138104772964, guid: 044df78c86564d54d946461fee34ef0a, type: 3}
+    - target: {fileID: 0}
       propertyPath: _mazeGenerator
       value: 
       objectReference: {fileID: 996381477}
@@ -540,9 +569,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5902728595149049761, guid: 726239688167ce8438680b71b8ebb942, type: 3}
+      propertyPath: _grid
+      value: 
+      objectReference: {fileID: 1690947409}
     - target: {fileID: 7360337442566816745, guid: 726239688167ce8438680b71b8ebb942, type: 3}
       propertyPath: m_Name
-      value: MazeGenerator
+      value: MazeController
       objectReference: {fileID: 0}
     - target: {fileID: 7360337442566816746, guid: 726239688167ce8438680b71b8ebb942, type: 3}
       propertyPath: _player

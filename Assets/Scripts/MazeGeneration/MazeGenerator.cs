@@ -138,13 +138,17 @@ public class MazeGenerator : MonoBehaviour
 
     private void InitializePlayer()
     {
-        _player = Instantiate(_player, _nodes[0].transform.position, Quaternion.identity);
+        var nodePosition = _nodes[0].transform.position;
+        nodePosition.y = 0.02f;
+        _player = Instantiate(_player, nodePosition, Quaternion.identity);
     }
 
     private void InitializeTreasure()
     {
         int lastIndex = _nodes.Count - 1;
-        _treasure = Instantiate(_treasure, _nodes[lastIndex].transform.position, Quaternion.identity);
+        var nodePosition = _nodes[lastIndex].transform.position;
+        nodePosition.y = 0.33f;
+        _treasure = Instantiate(_treasure, nodePosition, Quaternion.identity);
     }
 
 }
