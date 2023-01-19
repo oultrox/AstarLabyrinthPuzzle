@@ -20,7 +20,9 @@ public class MazeGenerator : MonoBehaviour
     private void Awake()
     {
         _pathFinder  = GetComponent<GridPathFinder>();
-        _parentMaze = Instantiate(new GameObject("ParentMaze"), Vector3.zero, Quaternion.identity, transform);
+        _parentMaze = new GameObject();
+        _parentMaze.transform.SetParent(this.transform);
+        _parentMaze.name = "ParentMaze";
     }
 
     public void StartMaze()
@@ -196,6 +198,7 @@ public class MazeGenerator : MonoBehaviour
         else
         {
             _treasure.transform.position = nodePosition;
+            _treasure.SetActive(true);
         }
     }
 

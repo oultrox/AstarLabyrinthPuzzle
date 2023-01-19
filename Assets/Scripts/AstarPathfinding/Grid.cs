@@ -11,98 +11,102 @@ public class Grid : MonoBehaviour
     [SerializeField] private float _distanceBetweenNodes;
     [SerializeField] private GameObject pathRender;
     private float _nodeRadius = 0.2f;
-    private Node[,] _nodeArray;//The array of nodes that the A Star algorithm uses.
-    private List<Node> _finalPath;//The completed path that the red line will be drawn along
+    private Node[,] _nodeArray;
+    private List<Node> _finalPath;
 
     private Vector3 _pathPosition;
-    private float _nodeDiameter;//Twice the amount of the radius (Set in the start function)
-    private int _gridSizeX, _gridSizeY;//Size of the Grid in Array units.
+    private float _nodeDiameter;
+    private int _gridSizeX, _gridSizeY;
     private GameObject _gridDebuggerParent;
 
     public List<Node> FinalPath { get => _finalPath; set => _finalPath = value; }
 
-    private void Start()//Ran once the program starts
+    private void Start()
     {
-        _gridDebuggerParent = Instantiate(new GameObject("DebuggerPath"), Vector3.zero, Quaternion.identity, transform);
+        _gridDebuggerParent = new GameObject();
+        _gridDebuggerParent.transform.SetParent(this.transform);
+        _gridDebuggerParent.name = "PathDebugger";
         _gridDebuggerParent.SetActive(false);
-        _nodeDiameter = _nodeRadius * 2;//Double the radius to get diameter
-        _gridSizeX = Mathf.RoundToInt(_gridWorldSize.x / _nodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
-        _gridSizeY = Mathf.RoundToInt(_gridWorldSize.y / _nodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
+        
+        //Double the radius to get diameter
+        _nodeDiameter = _nodeRadius * 2;
+
+        //Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
+        _gridSizeX = Mathf.RoundToInt(_gridWorldSize.x / _nodeDiameter);
+        _gridSizeY = Mathf.RoundToInt(_gridWorldSize.y / _nodeDiameter);
     }
 
+    //Declare the array of node and create the grid from the array.
     public void CreateGrid()
     {
-        _nodeArray = new Node[_gridSizeX, _gridSizeY];//Declare the array of nodes.
-        Vector3 bottomLeft = transform.position - Vector3.right * _gridWorldSize.x / 2 - Vector3.forward * _gridWorldSize.y / 2;//Get the real world position of the bottom left of the grid.
-        for (int x = 0; x < _gridSizeX; x++)//Loop through the array of nodes.
+        _nodeArray = new Node[_gridSizeX, _gridSizeY];
+        Vector3 bottomLeft = transform.position - Vector3.right * _gridWorldSize.x / 2 - Vector3.forward * _gridWorldSize.y / 2;
+        for (int x = 0; x < _gridSizeX; x++)
         {
-            for (int y = 0; y < _gridSizeY; y++)//Loop through the array of nodes
+            for (int y = 0; y < _gridSizeY; y++)
             {
-                Vector3 worldPoint = bottomLeft + Vector3.right * (x * _nodeDiameter + _nodeRadius) + Vector3.forward * (y * _nodeDiameter + _nodeRadius);//Get the world co ordinates of the bottom left of the graph
+                //Get the world co ordinates of the bottom left of the graph
+                Vector3 worldPoint = bottomLeft + Vector3.right * (x * _nodeDiameter + _nodeRadius) + Vector3.forward * (y * _nodeDiameter + _nodeRadius);
                 bool Wall = true;//Make the node a wall
 
-                //If the node is not being obstructed
-                //Quick collision check against the current node and anything in the world at its position. If it is colliding with an object with a _wallMask,
-                //The if statement will return false.
                 if (Physics.CheckSphere(worldPoint, _nodeRadius, _wallMask))
                 {
-                    Wall = false;//Object is not a wall
+                    Wall = false;
                 }
 
-                _nodeArray[x, y] = new Node(Wall, worldPoint, x, y);//Create a new node in the array.
+                _nodeArray[x, y] = new Node(Wall, worldPoint, x, y);
             }
         }
     }
 
-    //Function that gets the neighboring nodes of the given node.
-    public List<Node> GetNeighboringNodes(Node neighborNode)
+    public List<Node> GetNeighborNode(Node neighborNode)
     {
-        List<Node> NeighborList = new List<Node>();//Make a new list of all available neighbors.
-        int icheckX;//Variable to check if the XPosition is within range of the node array to avoid out of range errors.
-        int icheckY;//Variable to check if the YPosition is within range of the node array to avoid out of range errors.
+        List<Node> NeighborList = new List<Node>();
+        int icheckX;
+        int icheckY;
 
         //Check the right side of the current node.
         icheckX = neighborNode.PosX + 1;
         icheckY = neighborNode.PosY;
-        if (icheckX >= 0 && icheckX < _gridSizeX)//If the XPosition is in range of the array
+        if (icheckX >= 0 && icheckX < _gridSizeX)
         {
-            if (icheckY >= 0 && icheckY < _gridSizeY)//If the YPosition is in range of the array
+            if (icheckY >= 0 && icheckY < _gridSizeY)
             {
-                NeighborList.Add(_nodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
+                NeighborList.Add(_nodeArray[icheckX, icheckY]);
             }
         }
         //Check the Left side of the current node.
         icheckX = neighborNode.PosX - 1;
         icheckY = neighborNode.PosY;
-        if (icheckX >= 0 && icheckX < _gridSizeX)//If the XPosition is in range of the array
+        if (icheckX >= 0 && icheckX < _gridSizeX)
         {
-            if (icheckY >= 0 && icheckY < _gridSizeY)//If the YPosition is in range of the array
+            if (icheckY >= 0 && icheckY < _gridSizeY)
             {
-                NeighborList.Add(_nodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
+                NeighborList.Add(_nodeArray[icheckX, icheckY]);
             }
         }
         //Check the Top side of the current node.
         icheckX = neighborNode.PosX;
         icheckY = neighborNode.PosY + 1;
-        if (icheckX >= 0 && icheckX < _gridSizeX)//If the XPosition is in range of the array
+        if (icheckX >= 0 && icheckX < _gridSizeX)
         {
-            if (icheckY >= 0 && icheckY < _gridSizeY)//If the YPosition is in range of the array
+            if (icheckY >= 0 && icheckY < _gridSizeY)
             {
-                NeighborList.Add(_nodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
+                NeighborList.Add(_nodeArray[icheckX, icheckY]);
             }
         }
         //Check the Bottom side of the current node.
         icheckX = neighborNode.PosX;
         icheckY = neighborNode.PosY - 1;
-        if (icheckX >= 0 && icheckX < _gridSizeX)//If the XPosition is in range of the array
+        if (icheckX >= 0 && icheckX < _gridSizeX)
         {
-            if (icheckY >= 0 && icheckY < _gridSizeY)//If the YPosition is in range of the array
+            if (icheckY >= 0 && icheckY < _gridSizeY)
             {
-                NeighborList.Add(_nodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
+                NeighborList.Add(_nodeArray[icheckX, icheckY]);
             }
         }
 
-        return NeighborList;//Return the neighbors list.
+        return NeighborList;
     }
 
     //Gets the closest node to the given world position.

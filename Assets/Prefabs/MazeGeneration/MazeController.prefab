@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7360337442566816747}
   - component: {fileID: 7360337442566816746}
-  - component: {fileID: 4026232155028177745}
   - component: {fileID: 240248104585690724}
+  - component: {fileID: 4026232155028177745}
   m_Layer: 0
   m_Name: MazeController
   m_TagString: Untagged
@@ -51,18 +51,6 @@ MonoBehaviour:
   _nodeSize: 0
   _playerPrefab: {fileID: 0}
   _treasurePrefab: {fileID: 0}
---- !u!114 &4026232155028177745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7360337442566816745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e604479790f4bca48992e6b54da16c6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &240248104585690724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,3 +69,15 @@ MonoBehaviour:
   _gridWorldSize: {x: 30, y: 30}
   _distanceBetweenNodes: 0
   pathRender: {fileID: 7405483286531819937, guid: 065e604411909a347b25dda7eed51601, type: 3}
+--- !u!114 &4026232155028177745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7360337442566816745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e604479790f4bca48992e6b54da16c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

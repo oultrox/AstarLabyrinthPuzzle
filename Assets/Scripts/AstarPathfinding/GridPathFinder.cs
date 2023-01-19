@@ -43,7 +43,7 @@ public class GridPathFinder : MonoBehaviour
                 GetFinalPath(StartNode, TargetNode);//Calculate the final path
             }
 
-            foreach (Node NeighborNode in _grid.GetNeighboringNodes(CurrentNode))//Loop through each neighbor of the current node
+            foreach (Node NeighborNode in _grid.GetNeighborNode(CurrentNode))//Loop through each neighbor of the current node
             {
                 if (!NeighborNode.IsWall || ClosedList.Contains(NeighborNode))//If the neighbor is a wall or has already been checked
                 {
