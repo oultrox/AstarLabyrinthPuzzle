@@ -54,9 +54,8 @@ public class MazePathFinder : MonoBehaviour
                     }
                 }
             }
-            _gridReference.DrawPath();
-
         }
+        _gridReference.DrawPath();
     }
 
 

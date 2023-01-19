@@ -120,7 +120,7 @@ public class Grid : MonoBehaviour
 
     public void DrawPath()
     {
-
+        Debug.Log("Drawing path");
         if (NodeArray != null)//If the grid is not empty
         {
             foreach (Node n in NodeArray)//Loop through every node in the grid

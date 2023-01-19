@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public class MazeGenerator : MonoBehaviour
 {
     [SerializeField] private MazeNode _nodePrefab;
     [SerializeField] private Vector2Int _mazeSize;
     [SerializeField] private float _nodeSize;
-    [SerializeField] private GameObject _player;
-    [SerializeField] private GameObject _treasure;
+    [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private GameObject _treasurePrefab;
     [SerializeField] private Grid _grid;
     private MazePathFinder _pathFinder;
     private List<MazeNode> _nodes;
-
-    public GameObject Player { get => _player; set => _player = value; }
-    public GameObject Treasure { get => _treasure; set => _treasure = value; }
+    private GameObject _player;
+    private GameObject _treasure;
 
     private void Start()
     {
@@ -24,11 +24,25 @@ public class MazeGenerator : MonoBehaviour
 
     public void StartMaze()
     {
+        if(_nodes != null)
+        {
+            _nodes.Clear();
+            ClearMaze();
+        }
+
         GenerateMaze(_mazeSize);
         InitializePlayer();
         InitializeTreasure();
         _grid.CreateGrid();
         _pathFinder.FindPath(_player.transform.position, _treasure.transform.position);
+    }
+
+    private void ClearMaze()
+    {
+        for (var i = transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(transform.GetChild(i).gameObject);
+        }
     }
 
     void GenerateMaze(Vector2Int size)
@@ -147,7 +161,18 @@ public class MazeGenerator : MonoBehaviour
     {
         var nodePosition = _nodes[0].transform.position;
         nodePosition.y = 0.02f;
-        _player = Instantiate(_player, nodePosition, Quaternion.identity);
+        
+        if (_player == null)
+        {
+            _player = Instantiate(_playerPrefab, nodePosition, Quaternion.identity);
+        }
+        else
+        {
+            CharacterController charController = _player.GetComponent<CharacterController>();
+            charController.enabled = false;
+            charController.transform.position = nodePosition;
+            charController.enabled = true;
+        }
     }
 
     private void InitializeTreasure()
@@ -155,7 +180,14 @@ public class MazeGenerator : MonoBehaviour
         int lastIndex = _nodes.Count - 1;
         var nodePosition = _nodes[lastIndex].transform.position;
         nodePosition.y = 0.33f;
-        _treasure = Instantiate(_treasure, nodePosition, Quaternion.identity);
+        if(_treasure == null)
+        {
+            _treasure = Instantiate(_treasurePrefab, nodePosition, Quaternion.identity);
+        }
+        else
+        {
+            _treasure.transform.position = nodePosition;
+        }
     }
 
 }
