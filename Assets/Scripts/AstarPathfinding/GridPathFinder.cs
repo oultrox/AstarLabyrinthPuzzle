@@ -6,7 +6,7 @@ using UnityEngine;
 //TODO: Implementar el path  aquí en vez de en el grid
 public class GridPathFinder : MonoBehaviour
 {
-    private Grid _grid;//For referencing the grid class
+    private Grid _grid;
 
     public Grid Grid { get => _grid; set => _grid = value; }
 
