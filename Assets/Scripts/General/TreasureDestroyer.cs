@@ -12,6 +12,7 @@ public class TreasureDestroyer : MonoBehaviour
         _particleSystem = _treasureParticle.GetComponent<ParticleSystem>();
         _particleSystem.Stop();
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))

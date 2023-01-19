@@ -76,7 +76,6 @@ public class MazeGenerator : MonoBehaviour
 
         // Choose starting node
         currentPath.Add(_nodes[Random.Range(0, _nodes.Count)]);
-        currentPath[0].SetState(MazeNodeState.Current);
 
         while (completedNodes.Count < _nodes.Count)
         {
@@ -156,13 +155,11 @@ public class MazeGenerator : MonoBehaviour
                 }
 
                 currentPath.Add(chosenNode);
-                chosenNode.SetState(MazeNodeState.Current);
             }
             else
             {
                 completedNodes.Add(currentPath[currentPath.Count - 1]);
 
-                currentPath[currentPath.Count - 1].SetState(MazeNodeState.Completed);
                 currentPath.RemoveAt(currentPath.Count - 1);
             }
         }

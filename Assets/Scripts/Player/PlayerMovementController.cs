@@ -24,11 +24,11 @@ public class PlayerMovementController : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _playerInput = GetComponent<PlayerInput>();
         _moveAction = _playerInput.actions["Movement"];
-        
+
         #if UNITY_ANDROID
             ToggleTiltMovement();
         #endif
-        
+
     }
 
     private void Update()

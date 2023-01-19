@@ -1,12 +1,13 @@
 using UnityEngine;
 
+//Node class for the AStar algoritm, will also store what node it previously came from so it cn trace the shortest path.
 public class Node
 {
     private int _posX;
     private int _posY;
     private bool _isWall;
     private Vector3 _position;
-    private Node _parentNode; //For the AStar algoritm, will store what node it previously came from so it cn trace the shortest path.
+    private Node _parentNode; 
     private int _pathCost;
     private int _distanceCost;
 

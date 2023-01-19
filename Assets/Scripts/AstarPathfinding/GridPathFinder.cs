@@ -12,7 +12,9 @@ public class GridPathFinder : MonoBehaviour
     private Vector3 _pathPosition;
     private GameObject _gridDebuggerParent;
 
+    #region Properties
     public Grid Grid { get => _grid; set => _grid = value; }
+    #endregion
 
     private void Awake()
     {
@@ -33,41 +35,47 @@ public class GridPathFinder : MonoBehaviour
 
         OpenList.Add(StartNode);
 
-        while (OpenList.Count > 0)//Whilst there is something in the open list
+        while (OpenList.Count > 0)
         {
-            Node CurrentNode = OpenList[0];//Create a node and set it to the first item in the open list
-            for (int i = 1; i < OpenList.Count; i++)//Loop through the open list starting from the second object
+            Node CurrentNode = OpenList[0];
+            for (int i = 1; i < OpenList.Count; i++)
             {
-                if (OpenList[i].FCost < CurrentNode.FCost || OpenList[i].FCost == CurrentNode.FCost && OpenList[i].DistanceCost < CurrentNode.DistanceCost)//If the f cost of that object is less than or equal to the f cost of the current node
+                if (OpenList[i].FCost < CurrentNode.FCost || OpenList[i].FCost == CurrentNode.FCost && OpenList[i].DistanceCost < CurrentNode.DistanceCost)
                 {
-                    CurrentNode = OpenList[i];//Set the current node to that object
+                    CurrentNode = OpenList[i];
                 }
             }
-            OpenList.Remove(CurrentNode);//Remove that from the open list
-            ClosedList.Add(CurrentNode);//And add it to the closed list
+            OpenList.Remove(CurrentNode);
+            ClosedList.Add(CurrentNode);
 
-            if (CurrentNode == TargetNode)//If the current node is the same as the target node
+            if (CurrentNode == TargetNode)
             {
-                GetFinalPath(StartNode, TargetNode);//Calculate the final path
+                GetFinalPath(StartNode, TargetNode);
             }
 
-            foreach (Node NeighborNode in _grid.GetNeighborNode(CurrentNode))//Loop through each neighbor of the current node
+            //Loop through each neighbor of the current node
+            foreach (Node NeighborNode in _grid.GetNeighborNode(CurrentNode))
             {
-                if (!NeighborNode.IsWall || ClosedList.Contains(NeighborNode))//If the neighbor is a wall or has already been checked
+                if (!NeighborNode.IsWall || ClosedList.Contains(NeighborNode))
                 {
-                    continue;//Skip it
+                    continue;
                 }
-                int MoveCost = CurrentNode.PathCost + GetManhattenDistance(CurrentNode, NeighborNode);//Get the F cost of that neighbor
+                //Get the F cost of that neighbor
+                int MoveCost = CurrentNode.PathCost + GetManhattenDistance(CurrentNode, NeighborNode);
 
-                if (MoveCost < NeighborNode.PathCost || !OpenList.Contains(NeighborNode))//If the f cost is greater than the g cost or it is not in the open list
+                //If the f cost is greater than the g cost or it is not in the open list
+                if (MoveCost < NeighborNode.PathCost || !OpenList.Contains(NeighborNode))
                 {
-                    NeighborNode.PathCost = MoveCost;//Set the g cost to the f cost
-                    NeighborNode.DistanceCost = GetManhattenDistance(NeighborNode, TargetNode);//Set the h cost
-                    NeighborNode.ParentNode = CurrentNode;//Set the parent of the node for retracing steps
+                    //Set the g cost to the f cost
+                    NeighborNode.PathCost = MoveCost;
+                    NeighborNode.DistanceCost = GetManhattenDistance(NeighborNode, TargetNode);
+                    
+                    //Set the parent of the node for retracing steps
+                    NeighborNode.ParentNode = CurrentNode;
 
-                    if (!OpenList.Contains(NeighborNode))//If the neighbor is not in the openlist
+                    if (!OpenList.Contains(NeighborNode))
                     {
-                        OpenList.Add(NeighborNode);//Add it to the list
+                        OpenList.Add(NeighborNode);
                     }
                 }
             }
@@ -114,26 +122,28 @@ public class GridPathFinder : MonoBehaviour
 
     void GetFinalPath(Node startingNode, Node endNode)
     {
-        List<Node> FinalPath = new List<Node>();//List to hold the path sequentially 
-        Node CurrentNode = endNode;//Node to store the current node being checked
+        List<Node> FinalPath = new List<Node>();
+        Node CurrentNode = endNode;
 
-        while (CurrentNode != startingNode)//While loop to work through each node going through the parents to the beginning of the path
+        while (CurrentNode != startingNode)
         {
-            FinalPath.Add(CurrentNode);//Add that node to the final path
-            CurrentNode = CurrentNode.ParentNode;//Move onto its parent node
+            FinalPath.Add(CurrentNode);
+            CurrentNode = CurrentNode.ParentNode;
         }
 
-        FinalPath.Reverse();//Reverse the path to get the correct order
+        FinalPath.Reverse();
 
-        _finalPath = FinalPath;//Set the final path
+        _finalPath = FinalPath;
 
     }
 
     int GetManhattenDistance(Node nodeA, Node nodeB)
     {
-        int ix = Mathf.Abs(nodeA.PosX - nodeB.PosX);//x1-x2
-        int iy = Mathf.Abs(nodeA.PosY - nodeB.PosY);//y1-y2
+        int valueX = Mathf.Abs(nodeA.PosX - nodeB.PosX);
+        int valueY = Mathf.Abs(nodeA.PosY - nodeB.PosY);
 
-        return ix + iy;//Return the sum
+        return valueX + valueY;
+        
+
     }
 }
