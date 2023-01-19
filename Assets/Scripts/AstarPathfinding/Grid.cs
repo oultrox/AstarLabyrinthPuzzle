@@ -6,49 +6,50 @@ using UnityEngine;
 public class Grid : MonoBehaviour
 {
 
-    public LayerMask WallMask;//This is the mask that the program will look for when trying to find obstructions to the path.
-    public Vector2 vGridWorldSize;//A vector2 to store the width and height of the graph in world units.
-    public float fNodeRadius;//This stores how big each square on the graph will be
-    public float fDistanceBetweenNodes;//The distance that the squares will spawn from eachother.
+    [SerializeField] private LayerMask _wallMask;
+    [SerializeField] private Vector2 _gridWorldSize;
+    [SerializeField] private float _distanceBetweenNodes;
     [SerializeField] private GameObject pathRender;
+    private float _nodeRadius = 0.2f;
+    private Node[,] _nodeArray;//The array of nodes that the A Star algorithm uses.
+    private List<Node> _finalPath;//The completed path that the red line will be drawn along
 
-    private Node[,] NodeArray;//The array of nodes that the A Star algorithm uses.
-    public List<Node> FinalPath;//The completed path that the red line will be drawn along
-
-    private Vector3 pathPosition;
-    private float fNodeDiameter;//Twice the amount of the radius (Set in the start function)
-    private int iGridSizeX, iGridSizeY;//Size of the Grid in Array units.
+    private Vector3 _pathPosition;
+    private float _nodeDiameter;//Twice the amount of the radius (Set in the start function)
+    private int _gridSizeX, _gridSizeY;//Size of the Grid in Array units.
     private GameObject _gridDebuggerParent;
+
+    public List<Node> FinalPath { get => _finalPath; set => _finalPath = value; }
 
     private void Start()//Ran once the program starts
     {
         _gridDebuggerParent = Instantiate(new GameObject("DebuggerPath"), Vector3.zero, Quaternion.identity, transform);
         _gridDebuggerParent.SetActive(false);
-        fNodeDiameter = fNodeRadius * 2;//Double the radius to get diameter
-        iGridSizeX = Mathf.RoundToInt(vGridWorldSize.x / fNodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
-        iGridSizeY = Mathf.RoundToInt(vGridWorldSize.y / fNodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
+        _nodeDiameter = _nodeRadius * 2;//Double the radius to get diameter
+        _gridSizeX = Mathf.RoundToInt(_gridWorldSize.x / _nodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
+        _gridSizeY = Mathf.RoundToInt(_gridWorldSize.y / _nodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
     }
 
     public void CreateGrid()
     {
-        NodeArray = new Node[iGridSizeX, iGridSizeY];//Declare the array of nodes.
-        Vector3 bottomLeft = transform.position - Vector3.right * vGridWorldSize.x / 2 - Vector3.forward * vGridWorldSize.y / 2;//Get the real world position of the bottom left of the grid.
-        for (int x = 0; x < iGridSizeX; x++)//Loop through the array of nodes.
+        _nodeArray = new Node[_gridSizeX, _gridSizeY];//Declare the array of nodes.
+        Vector3 bottomLeft = transform.position - Vector3.right * _gridWorldSize.x / 2 - Vector3.forward * _gridWorldSize.y / 2;//Get the real world position of the bottom left of the grid.
+        for (int x = 0; x < _gridSizeX; x++)//Loop through the array of nodes.
         {
-            for (int y = 0; y < iGridSizeY; y++)//Loop through the array of nodes
+            for (int y = 0; y < _gridSizeY; y++)//Loop through the array of nodes
             {
-                Vector3 worldPoint = bottomLeft + Vector3.right * (x * fNodeDiameter + fNodeRadius) + Vector3.forward * (y * fNodeDiameter + fNodeRadius);//Get the world co ordinates of the bottom left of the graph
+                Vector3 worldPoint = bottomLeft + Vector3.right * (x * _nodeDiameter + _nodeRadius) + Vector3.forward * (y * _nodeDiameter + _nodeRadius);//Get the world co ordinates of the bottom left of the graph
                 bool Wall = true;//Make the node a wall
 
                 //If the node is not being obstructed
-                //Quick collision check against the current node and anything in the world at its position. If it is colliding with an object with a WallMask,
+                //Quick collision check against the current node and anything in the world at its position. If it is colliding with an object with a _wallMask,
                 //The if statement will return false.
-                if (Physics.CheckSphere(worldPoint, fNodeRadius, WallMask))
+                if (Physics.CheckSphere(worldPoint, _nodeRadius, _wallMask))
                 {
                     Wall = false;//Object is not a wall
                 }
 
-                NodeArray[x, y] = new Node(Wall, worldPoint, x, y);//Create a new node in the array.
+                _nodeArray[x, y] = new Node(Wall, worldPoint, x, y);//Create a new node in the array.
             }
         }
     }
@@ -63,41 +64,41 @@ public class Grid : MonoBehaviour
         //Check the right side of the current node.
         icheckX = a_NeighborNode.iGridX + 1;
         icheckY = a_NeighborNode.iGridY;
-        if (icheckX >= 0 && icheckX < iGridSizeX)//If the XPosition is in range of the array
+        if (icheckX >= 0 && icheckX < _gridSizeX)//If the XPosition is in range of the array
         {
-            if (icheckY >= 0 && icheckY < iGridSizeY)//If the YPosition is in range of the array
+            if (icheckY >= 0 && icheckY < _gridSizeY)//If the YPosition is in range of the array
             {
-                NeighborList.Add(NodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
+                NeighborList.Add(_nodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
             }
         }
         //Check the Left side of the current node.
         icheckX = a_NeighborNode.iGridX - 1;
         icheckY = a_NeighborNode.iGridY;
-        if (icheckX >= 0 && icheckX < iGridSizeX)//If the XPosition is in range of the array
+        if (icheckX >= 0 && icheckX < _gridSizeX)//If the XPosition is in range of the array
         {
-            if (icheckY >= 0 && icheckY < iGridSizeY)//If the YPosition is in range of the array
+            if (icheckY >= 0 && icheckY < _gridSizeY)//If the YPosition is in range of the array
             {
-                NeighborList.Add(NodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
+                NeighborList.Add(_nodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
             }
         }
         //Check the Top side of the current node.
         icheckX = a_NeighborNode.iGridX;
         icheckY = a_NeighborNode.iGridY + 1;
-        if (icheckX >= 0 && icheckX < iGridSizeX)//If the XPosition is in range of the array
+        if (icheckX >= 0 && icheckX < _gridSizeX)//If the XPosition is in range of the array
         {
-            if (icheckY >= 0 && icheckY < iGridSizeY)//If the YPosition is in range of the array
+            if (icheckY >= 0 && icheckY < _gridSizeY)//If the YPosition is in range of the array
             {
-                NeighborList.Add(NodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
+                NeighborList.Add(_nodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
             }
         }
         //Check the Bottom side of the current node.
         icheckX = a_NeighborNode.iGridX;
         icheckY = a_NeighborNode.iGridY - 1;
-        if (icheckX >= 0 && icheckX < iGridSizeX)//If the XPosition is in range of the array
+        if (icheckX >= 0 && icheckX < _gridSizeX)//If the XPosition is in range of the array
         {
-            if (icheckY >= 0 && icheckY < iGridSizeY)//If the YPosition is in range of the array
+            if (icheckY >= 0 && icheckY < _gridSizeY)//If the YPosition is in range of the array
             {
-                NeighborList.Add(NodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
+                NeighborList.Add(_nodeArray[icheckX, icheckY]);//Add the grid to the available neighbors list
             }
         }
 
@@ -107,41 +108,40 @@ public class Grid : MonoBehaviour
     //Gets the closest node to the given world position.
     public Node NodeFromWorldPoint(Vector3 a_vWorldPos)
     {
-        float ixPos = ((a_vWorldPos.x + vGridWorldSize.x / 2) / vGridWorldSize.x);
-        float iyPos = ((a_vWorldPos.z + vGridWorldSize.y / 2) / vGridWorldSize.y);
+        float ixPos = ((a_vWorldPos.x + _gridWorldSize.x / 2) / _gridWorldSize.x);
+        float iyPos = ((a_vWorldPos.z + _gridWorldSize.y / 2) / _gridWorldSize.y);
 
         ixPos = Mathf.Clamp01(ixPos);
         iyPos = Mathf.Clamp01(iyPos);
 
-        int ix = Mathf.RoundToInt((iGridSizeX - 1) * ixPos);
-        int iy = Mathf.RoundToInt((iGridSizeY - 1) * iyPos);
+        int ix = Mathf.RoundToInt((_gridSizeX - 1) * ixPos);
+        int iy = Mathf.RoundToInt((_gridSizeY - 1) * iyPos);
 
-        return NodeArray[ix, iy];
+        return _nodeArray[ix, iy];
     }
 
     public void DrawPath()
     {
-        Debug.Log("Drawing path");
-        if (NodeArray != null)//If the grid is not empty
+        if (_nodeArray != null)//If the grid is not empty
         {
             for (var i = _gridDebuggerParent.transform.childCount - 1; i >= 0; i--)
             {
                 Destroy(_gridDebuggerParent.transform.GetChild(i).gameObject);
             }
 
-            foreach (Node n in NodeArray)//Loop through every node in the grid
+            foreach (Node n in _nodeArray)//Loop through every node in the grid
             {
                 //If the final path is not empty
-                if (FinalPath == null)
+                if (_finalPath == null)
                 {
                     continue;
                 }
                 
-                if (FinalPath.Contains(n))//If the current node is in the final path
+                if (_finalPath.Contains(n))//If the current node is in the final path
                 {
-                    pathPosition = n.vPosition;
-                    pathPosition.y = 0.02f;
-                    Instantiate(pathRender, pathPosition, Quaternion.identity, _gridDebuggerParent.transform);
+                    _pathPosition = n.vPosition;
+                    _pathPosition.y = 0.02f;
+                    Instantiate(pathRender, _pathPosition, Quaternion.identity, _gridDebuggerParent.transform);
                 }
             }
         }
@@ -162,11 +162,11 @@ public class Grid : MonoBehaviour
     private void OnDrawGizmos()
     {
 
-        Gizmos.DrawWireCube(transform.position, new Vector3(vGridWorldSize.x, 1, vGridWorldSize.y));//Draw a wire cube with the given dimensions from the Unity inspector
+        Gizmos.DrawWireCube(transform.position, new Vector3(_gridWorldSize.x, 1, _gridWorldSize.y));//Draw a wire cube with the given dimensions from the Unity inspector
 
-        if (NodeArray != null)//If the grid is not empty
+        if (_nodeArray != null)//If the grid is not empty
         {
-            foreach (Node n in NodeArray)//Loop through every node in the grid
+            foreach (Node n in _nodeArray)//Loop through every node in the grid
             {
                 if (n.bIsWall)//If the current node is a wall node
                 {
@@ -178,9 +178,9 @@ public class Grid : MonoBehaviour
                 }
 
 
-                if (FinalPath != null)//If the final path is not empty
+                if (_finalPath != null)//If the final path is not empty
                 {
-                    if (FinalPath.Contains(n))//If the current node is in the final path
+                    if (_finalPath.Contains(n))//If the current node is in the final path
                     {
                         Gizmos.color = Color.red;//Set the color of that node
                     }
@@ -188,7 +188,7 @@ public class Grid : MonoBehaviour
                 }
 
 
-                Gizmos.DrawCube(n.vPosition, Vector3.one * (fNodeDiameter - fDistanceBetweenNodes));//Draw the node at the position of the node.
+                Gizmos.DrawCube(n.vPosition, Vector3.one * (_nodeDiameter - _distanceBetweenNodes));//Draw the node at the position of the node.
             }
         }
     }

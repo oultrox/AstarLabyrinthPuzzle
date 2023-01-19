@@ -44,10 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bb9bb6287eb6274c91fa109c7deddeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WallMask:
+  _wallMask:
     serializedVersion: 2
-    m_Bits: 64
-  vGridWorldSize: {x: 30, y: 20}
-  fNodeRadius: 0.2
-  fDistanceBetweenNodes: 0
+    m_Bits: 0
+  _gridWorldSize: {x: 0, y: 0}
+  _distanceBetweenNodes: 0
   pathRender: {fileID: 7405483286531819937, guid: 065e604411909a347b25dda7eed51601, type: 3}

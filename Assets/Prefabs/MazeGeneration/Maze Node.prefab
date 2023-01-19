@@ -340,12 +340,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 549412a31fbec0744bc26a5c27ff5fbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walls:
+  _walls:
   - {fileID: 8775671689712889211}
   - {fileID: 8775671690034956528}
   - {fileID: 8775671690776993551}
   - {fileID: 8775671689810753021}
-  floor: {fileID: 8775671691594669838}
+  _floor: {fileID: 8775671691594669838}
 --- !u!1 &8775671690776993551
 GameObject:
   m_ObjectHideFlags: 0

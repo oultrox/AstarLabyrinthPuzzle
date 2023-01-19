@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//TODO: Implementar el path aquí en vez de en el grid
 public class MazePathFinder : MonoBehaviour
 {
     [SerializeField] private Grid _gridReference;//For referencing the grid class
@@ -57,8 +59,6 @@ public class MazePathFinder : MonoBehaviour
         }
         _gridReference.DrawPath();
     }
-
-
 
     void GetFinalPath(Node a_StartingNode, Node a_EndNode)
     {

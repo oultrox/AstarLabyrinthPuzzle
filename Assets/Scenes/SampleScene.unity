@@ -1204,6 +1204,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grid
       objectReference: {fileID: 0}
+    - target: {fileID: 4927258138104772966, guid: 044df78c86564d54d946461fee34ef0a, type: 3}
+      propertyPath: _gridWorldSize.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4927258138104772966, guid: 044df78c86564d54d946461fee34ef0a, type: 3}
+      propertyPath: _gridWorldSize.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4927258138104772966, guid: 044df78c86564d54d946461fee34ef0a, type: 3}
+      propertyPath: _wallMask.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 4927258138104772967, guid: 044df78c86564d54d946461fee34ef0a, type: 3}
       propertyPath: m_RootOrder
       value: 3
