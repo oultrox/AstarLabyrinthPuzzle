@@ -87,11 +87,7 @@ public class GridPathFinder : MonoBehaviour
     {
         if (nodeArray != null)
         {
-            for (var i = _gridDebuggerParent.transform.childCount - 1; i >= 0; i--)
-            {
-                Destroy(_gridDebuggerParent.transform.GetChild(i).gameObject);
-            }
-
+            ClearPath();
             foreach (Node n in nodeArray)
             {
                 if (_finalPath == null)
@@ -109,20 +105,40 @@ public class GridPathFinder : MonoBehaviour
         }
     }
 
-    public IEnumerator PathfindingInitialization(Vector3 initialPos, Vector3 targetPos)
+
+    internal IEnumerator InitializeGrid()
     {
         HidePath();
+        yield return new WaitForSeconds(0f);
+        Grid.CreateGrid();
+    }
 
-        //Wait for another frame to generate the grid based on the maze
+    internal IEnumerator FindSolution(Vector3 initialPos, Vector3 targetPos)
+    {
+        HidePath();
+        ClearPath();
+
         yield return new WaitForSeconds(0f);
         FindPath(initialPos, targetPos);
+        yield return new WaitForSeconds(0f);
+        ShowPath();
     }
 
     public void ShowPath()
     {
+        //Log
         bool isActive = !_gridDebuggerParent.activeSelf;
         _gridDebuggerParent.SetActive(isActive);
     }
+
+    private void ClearPath()
+    {
+        for (var i = _gridDebuggerParent.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(_gridDebuggerParent.transform.GetChild(i).gameObject);
+        }
+    }
+    
 
     public void HidePath()
     {

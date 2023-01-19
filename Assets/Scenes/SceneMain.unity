@@ -888,18 +888,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1991738969}
-        m_TargetAssemblyTypeName: GridPathFinder, Assembly-CSharp
-        m_MethodName: ShowPath
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &1223212205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1476,17 +1464,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &1991738969 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4026232155028177745, guid: 726239688167ce8438680b71b8ebb942, type: 3}
-  m_PrefabInstance: {fileID: 7360337441767262984}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e604479790f4bca48992e6b54da16c6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2068730209
 GameObject:
   m_ObjectHideFlags: 0
@@ -1621,6 +1598,14 @@ PrefabInstance:
       value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 240248104585690724, guid: 726239688167ce8438680b71b8ebb942, type: 3}
+      propertyPath: _gridWorldSize.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 240248104585690724, guid: 726239688167ce8438680b71b8ebb942, type: 3}
+      propertyPath: _gridWorldSize.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 240248104585690724, guid: 726239688167ce8438680b71b8ebb942, type: 3}
       propertyPath: _distanceBetweenNodes
       value: 0.5
       objectReference: {fileID: 0}
@@ -1630,7 +1615,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7360337442566816746, guid: 726239688167ce8438680b71b8ebb942, type: 3}
       propertyPath: _nodeSize
-      value: 1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7360337442566816746, guid: 726239688167ce8438680b71b8ebb942, type: 3}
+      propertyPath: _mazeSize.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7360337442566816746, guid: 726239688167ce8438680b71b8ebb942, type: 3}
+      propertyPath: _mazeSize.y
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7360337442566816747, guid: 726239688167ce8438680b71b8ebb942, type: 3}
       propertyPath: m_RootOrder

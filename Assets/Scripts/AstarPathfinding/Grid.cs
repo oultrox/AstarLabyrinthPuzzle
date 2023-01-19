@@ -7,9 +7,10 @@ public class Grid : MonoBehaviour
 {
     [SerializeField] private LayerMask _wallMask;
     [SerializeField] private Vector2 _gridWorldSize;
-    [SerializeField] private float _distanceBetweenNodes;
-    [SerializeField] private float _nodeRadius = 0.2f;
+    
+    [SerializeField] private float _nodeRadius = 0.15f;
 
+    private float _distanceBetweenNodes;
     private Node[,] _nodeArray;
     private float _nodeDiameter;
     private int _gridSizeX, _gridSizeY;
