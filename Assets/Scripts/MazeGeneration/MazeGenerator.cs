@@ -10,18 +10,25 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField] private float _nodeSize;
     [SerializeField] private GameObject _player;
     [SerializeField] private GameObject _treasure;
-
-
+    [SerializeField] private Grid _grid;
+    private MazePathFinder _pathFinder;
     private List<MazeNode> _nodes;
 
     public GameObject Player { get => _player; set => _player = value; }
     public GameObject Treasure { get => _treasure; set => _treasure = value; }
 
-    private void Awake()
+    private void Start()
+    {
+        _pathFinder  = GetComponent<MazePathFinder>();
+    }
+
+    public void StartMaze()
     {
         GenerateMaze(_mazeSize);
         InitializePlayer();
         InitializeTreasure();
+        _grid.CreateGrid();
+        _pathFinder.FindPath(_player.transform.position, _treasure.transform.position);
     }
 
     void GenerateMaze(Vector2Int size)

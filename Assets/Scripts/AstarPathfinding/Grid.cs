@@ -26,10 +26,9 @@ public class Grid : MonoBehaviour
         fNodeDiameter = fNodeRadius * 2;//Double the radius to get diameter
         iGridSizeX = Mathf.RoundToInt(vGridWorldSize.x / fNodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
         iGridSizeY = Mathf.RoundToInt(vGridWorldSize.y / fNodeDiameter);//Divide the grids world co-ordinates by the diameter to get the size of the graph in array units.
-        CreateGrid();//Draw the grid
     }
 
-    void CreateGrid()
+    public void CreateGrid()
     {
         NodeArray = new Node[iGridSizeX, iGridSizeY];//Declare the array of nodes.
         Vector3 bottomLeft = transform.position - Vector3.right * vGridWorldSize.x / 2 - Vector3.forward * vGridWorldSize.y / 2;//Get the real world position of the bottom left of the grid.

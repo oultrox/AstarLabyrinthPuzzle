@@ -4,38 +4,9 @@ using UnityEngine;
 
 public class MazePathFinder : MonoBehaviour
 {
-    private MazeGenerator _mazeGenerator;
-    
     [SerializeField] private Grid _gridReference;//For referencing the grid class
-    private Transform _startPosition;//Starting position to pathfind from
-    private Transform _targetPosition;//Starting position to pathfind to
-    private bool isGenerated = false;
     
-    private void Awake()
-    {
-        _mazeGenerator = GetComponent<MazeGenerator>();//Get a reference to the game manager
-    }
-
-    private void Start()//When the program starts
-    {
-        _startPosition = _mazeGenerator.Player.transform;
-        _targetPosition = _mazeGenerator.Treasure.transform;
-    }
-
-    private void Update()
-    {
-        if(!isGenerated)
-            GenerateRoute();
-    }
-
-    private void GenerateRoute()//Every frame
-    {
-        isGenerated = true;
-        FindPath(_startPosition.position, _targetPosition.position);//Find a path to the goal
-        _gridReference.DrawPath();
-    }
-
-    void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
+    public void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
     {
         Node StartNode = _gridReference.NodeFromWorldPoint(a_StartPos);//Gets the node closest to the starting position
         Node TargetNode = _gridReference.NodeFromWorldPoint(a_TargetPos);//Gets the node closest to the target position
@@ -83,6 +54,7 @@ public class MazePathFinder : MonoBehaviour
                     }
                 }
             }
+            _gridReference.DrawPath();
 
         }
     }
