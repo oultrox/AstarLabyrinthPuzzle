@@ -6,12 +6,19 @@ using UnityEngine;
 //TODO: Implementar el path aquí en vez de en el grid
 public class MazePathFinder : MonoBehaviour
 {
-    [SerializeField] private Grid _gridReference;//For referencing the grid class
-    
+    private Grid _grid;//For referencing the grid class
+
+    public Grid Grid { get => _grid; set => _grid = value; }
+
+    private void Awake()
+    {
+        _grid = GetComponent<Grid>();
+    }
+
     public void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
     {
-        Node StartNode = _gridReference.NodeFromWorldPoint(a_StartPos);//Gets the node closest to the starting position
-        Node TargetNode = _gridReference.NodeFromWorldPoint(a_TargetPos);//Gets the node closest to the target position
+        Node StartNode = _grid.NodeFromWorldPoint(a_StartPos);//Gets the node closest to the starting position
+        Node TargetNode = _grid.NodeFromWorldPoint(a_TargetPos);//Gets the node closest to the target position
 
         List<Node> OpenList = new List<Node>();//List of nodes for the open list
         HashSet<Node> ClosedList = new HashSet<Node>();//Hashset of nodes for the closed list
@@ -36,7 +43,7 @@ public class MazePathFinder : MonoBehaviour
                 GetFinalPath(StartNode, TargetNode);//Calculate the final path
             }
 
-            foreach (Node NeighborNode in _gridReference.GetNeighboringNodes(CurrentNode))//Loop through each neighbor of the current node
+            foreach (Node NeighborNode in _grid.GetNeighboringNodes(CurrentNode))//Loop through each neighbor of the current node
             {
                 if (!NeighborNode.bIsWall || ClosedList.Contains(NeighborNode))//If the neighbor is a wall or has already been checked
                 {
@@ -57,7 +64,7 @@ public class MazePathFinder : MonoBehaviour
                 }
             }
         }
-        _gridReference.DrawPath();
+        _grid.DrawPath();
     }
 
     void GetFinalPath(Node a_StartingNode, Node a_EndNode)
@@ -73,7 +80,7 @@ public class MazePathFinder : MonoBehaviour
 
         FinalPath.Reverse();//Reverse the path to get the correct order
 
-        _gridReference.FinalPath = FinalPath;//Set the final path
+        _grid.FinalPath = FinalPath;//Set the final path
 
     }
 

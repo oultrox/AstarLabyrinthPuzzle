@@ -120,6 +120,8 @@ public class Grid : MonoBehaviour
         return _nodeArray[ix, iy];
     }
 
+
+    //TODO: Move this to MazePathFinder.
     public void DrawPath()
     {
         if (_nodeArray != null)//If the grid is not empty

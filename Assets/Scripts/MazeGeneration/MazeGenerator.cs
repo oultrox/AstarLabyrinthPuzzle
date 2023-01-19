@@ -10,15 +10,16 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField] private float _nodeSize;
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private GameObject _treasurePrefab;
-    [SerializeField] private Grid _grid;
     private MazePathFinder _pathFinder;
     private List<MazeNode> _nodes;
     private GameObject _player;
     private GameObject _treasure;
+    private GameObject _parentMaze;
 
     private void Awake()
     {
         _pathFinder  = GetComponent<MazePathFinder>();
+        _parentMaze = Instantiate(new GameObject("ParentMaze"), Vector3.zero, Quaternion.identity, transform);
     }
 
     public void StartMaze()
@@ -37,17 +38,17 @@ public class MazeGenerator : MonoBehaviour
 
     private IEnumerator PathfindingInitialization()
     {
-        _grid.HidePath();
+        _pathFinder.Grid.HidePath();
         yield return new WaitForSeconds(0.2f);
-        _grid.CreateGrid();
+        _pathFinder.Grid.CreateGrid();
         _pathFinder.FindPath(_player.transform.position, _treasure.transform.position);
     }
 
     private void ClearMaze()
     {
-        for (var i = transform.childCount - 1; i >= 0; i--)
+        for (var i = _parentMaze.transform.childCount - 1; i >= 0; i--)
         {
-            Destroy(transform.GetChild(i).gameObject);
+            Destroy(_parentMaze.transform.GetChild(i).gameObject);
         }
     }
 
@@ -61,7 +62,7 @@ public class MazeGenerator : MonoBehaviour
             for (int y = 0; y < size.y; y++)
             {
                 Vector3 nodePos = new Vector3(x - (size.x / 2f), 0, y - (size.y / 2f));
-                MazeNode newNode = Instantiate(_nodePrefab, nodePos, Quaternion.identity, transform);
+                MazeNode newNode = Instantiate(_nodePrefab, nodePos, Quaternion.identity, _parentMaze.transform);
                 _nodes.Add(newNode);
             }
         }
@@ -161,7 +162,7 @@ public class MazeGenerator : MonoBehaviour
                 currentPath.RemoveAt(currentPath.Count - 1);
             }
         }
-        _grid.CreateGrid();
+        _pathFinder.Grid.CreateGrid();
     }
 
     private void InitializePlayer()
