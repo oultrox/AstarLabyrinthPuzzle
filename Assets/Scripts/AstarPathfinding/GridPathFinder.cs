@@ -115,7 +115,6 @@ public class GridPathFinder : MonoBehaviour
 
         //Wait for another frame to generate the grid based on the maze
         yield return new WaitForSeconds(0f);
-        _grid.CreateGrid();
         FindPath(initialPos, targetPos);
     }
 

@@ -37,7 +37,8 @@ public class MazeGenerator : MonoBehaviour
         GenerateMaze(_mazeSize);
         InitializePlayer();
         InitializeTreasure();
-        StartCoroutine(_pathFinder.PathfindingInitialization(_initialPos,_treasure.transform.position));
+        _pathFinder.HidePath();
+        _pathFinder.Grid.CreateGrid();
     }
 
 
@@ -47,6 +48,12 @@ public class MazeGenerator : MonoBehaviour
         {
             Destroy(_parentMaze.transform.GetChild(i).gameObject);
         }
+    }
+
+    public void CreateMazeSolution()
+    {
+        _initialPos = _player.transform.position;
+        StartCoroutine(_pathFinder.PathfindingInitialization(_initialPos, _treasure.transform.position));
     }
 
     private void GenerateMaze(Vector2Int size)
