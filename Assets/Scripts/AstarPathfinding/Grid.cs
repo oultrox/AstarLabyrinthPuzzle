@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
-
     [SerializeField] private LayerMask _wallMask;
     [SerializeField] private Vector2 _gridWorldSize;
     [SerializeField] private float _distanceBetweenNodes;
@@ -167,34 +166,34 @@ public class Grid : MonoBehaviour
     #region Gizmos
     private void OnDrawGizmos()
     {
+        //Draw a wire cube with the given dimensions from the Unity inspector
+        Gizmos.DrawWireCube(transform.position, new Vector3(_gridWorldSize.x, 1, _gridWorldSize.y));
 
-        Gizmos.DrawWireCube(transform.position, new Vector3(_gridWorldSize.x, 1, _gridWorldSize.y));//Draw a wire cube with the given dimensions from the Unity inspector
-
-        if (_nodeArray != null)//If the grid is not empty
+        if (_nodeArray != null)
         {
-            foreach (Node n in _nodeArray)//Loop through every node in the grid
+            foreach (Node n in _nodeArray)
             {
-                if (n.IsWall)//If the current node is a wall node
+                if (n.IsWall)
                 {
-                    Gizmos.color = Color.white;//Set the color of the node
+                    Gizmos.color = Color.white;
                 }
                 else
                 {
-                    Gizmos.color = Color.yellow;//Set the color of the node
+                    Gizmos.color = Color.yellow;
                 }
 
 
-                if (_finalPath != null)//If the final path is not empty
+                if (_finalPath != null)
                 {
-                    if (_finalPath.Contains(n))//If the current node is in the final path
+                    if (_finalPath.Contains(n))
                     {
-                        Gizmos.color = Color.red;//Set the color of that node
+                        Gizmos.color = Color.red;
                     }
 
                 }
 
-
-                Gizmos.DrawCube(n.Position, Vector3.one * (_nodeDiameter - _distanceBetweenNodes));//Draw the node at the position of the node.
+                //Draw the node at the position of the node.
+                Gizmos.DrawCube(n.Position, Vector3.one * (_nodeDiameter - _distanceBetweenNodes));
             }
         }
     }

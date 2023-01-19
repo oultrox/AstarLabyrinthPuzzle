@@ -43,7 +43,6 @@ public class PlayerMovementController : MonoBehaviour
         }
     }
 
-    // Calculate the movement direction based on the tilt of the device
     private void TiltMovement()
     {
         _moveDirection = new Vector3(Input.acceleration.x, 0, Input.acceleration.y);
