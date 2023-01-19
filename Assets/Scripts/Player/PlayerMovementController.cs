@@ -10,11 +10,10 @@ public class PlayerMovementController : MonoBehaviour
     private CharacterController _characterController;
     private PlayerInput _playerInput;
     private InputAction _moveAction;
-    private Vector2 _moveDirection;
+    private Vector3 _moveDirection;
     private Vector3 _movement;
-    private bool _isTiltActivated = true;
-    private Quaternion _tiltRotation;
-    private Quaternion currentRotation;
+    private bool _isTiltActivated = false;
+
     private void Start()
     {
         _characterController = GetComponent<CharacterController>();
@@ -25,32 +24,14 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
-        if(!_isTiltActivated)
-        {
-            MoveCharacter();
-        }
-        else
+        MoveCharacter();
+
+        //Just for fun.
+        if(_isTiltActivated && _moveAction.ReadValue<Vector2>() == Vector2.zero)
         {
             TiltMovement();
         }
-
-    }
-
-    private void TiltMovement()
-    {
-        currentRotation = Input.gyro.attitude;
-
-        // Set the rotation of the character controller to match the device's current rotation
-        _characterController.transform.rotation = currentRotation;
-
-        // Calculate the movement direction based on the tilt of the device
-        _moveDirection = new Vector3(Input.acceleration.x, 0, Input.acceleration.y);
-
-        // Apply gravity to the movement direction
-        _moveDirection.y -= _gravity * Time.deltaTime;
-
-        // Move the character controller based on the calculated movement direction
-        _characterController.Move(_moveDirection * _speed * Time.deltaTime);
+        
     }
 
     private void ActivateTiltMovement()
@@ -59,11 +40,17 @@ public class PlayerMovementController : MonoBehaviour
         {
             _isTiltActivated = !_isTiltActivated;
             Input.gyro.enabled = _isTiltActivated;
-            _tiltRotation = Input.gyro.attitude;
         }
     }
 
-    
+    // Calculate the movement direction based on the tilt of the device
+    private void TiltMovement()
+    {
+        _moveDirection = new Vector3(Input.acceleration.x, 0, Input.acceleration.y);
+        _moveDirection.y = _gravity;
+        _characterController.Move(_speed * Time.deltaTime * _moveDirection);
+    }
+
 
     private void MoveCharacter()
     {

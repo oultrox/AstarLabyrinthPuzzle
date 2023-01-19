@@ -15,7 +15,8 @@ public class MazeGenerator : MonoBehaviour
     private GameObject _player;
     private GameObject _treasure;
     private GameObject _parentMaze;
-
+    private Vector3 _initialPos;
+ 
     private void Awake()
     {
         _pathFinder  = GetComponent<GridPathFinder>();
@@ -41,7 +42,7 @@ public class MazeGenerator : MonoBehaviour
         _pathFinder.Grid.HidePath();
         yield return new WaitForSeconds(0.2f);
         _pathFinder.Grid.CreateGrid();
-        _pathFinder.FindPath(_player.transform.position, _treasure.transform.position);
+        _pathFinder.FindPath(_initialPos, _treasure.transform.position);
     }
 
     private void ClearMaze()
@@ -169,7 +170,7 @@ public class MazeGenerator : MonoBehaviour
     {
         var nodePosition = _nodes[0].transform.position;
         nodePosition.y = 0.02f;
-        
+        _initialPos = nodePosition;
         if (_player == null)
         {
             _player = Instantiate(_playerPrefab, nodePosition, Quaternion.identity);
