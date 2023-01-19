@@ -130,7 +130,7 @@ public class GridPathFinder : MonoBehaviour
         _gridDebuggerParent.SetActive(false);
     }
 
-    void GetFinalPath(Node startingNode, Node endNode)
+    private void GetFinalPath(Node startingNode, Node endNode)
     {
         List<Node> FinalPath = new List<Node>();
         Node CurrentNode = endNode;
@@ -147,7 +147,7 @@ public class GridPathFinder : MonoBehaviour
 
     }
 
-    int GetManhattenDistance(Node nodeA, Node nodeB)
+    private int GetManhattenDistance(Node nodeA, Node nodeB)
     {
         int valueX = Mathf.Abs(nodeA.PosX - nodeB.PosX);
         int valueY = Mathf.Abs(nodeA.PosY - nodeB.PosY);

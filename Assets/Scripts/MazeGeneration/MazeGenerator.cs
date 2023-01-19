@@ -49,7 +49,7 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-    void GenerateMaze(Vector2Int size)
+    private void GenerateMaze(Vector2Int size)
     {
         _nodes = new List<MazeNode>();
 

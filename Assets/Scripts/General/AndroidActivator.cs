@@ -3,13 +3,13 @@ using UnityEngine;
 public class AndroidActivator : MonoBehaviour
 {
     [SerializeField] private GameObject prefabToEnable;
-    void Start()
+    private void Start()
     {
-#if UNITY_ANDROID
-            prefabToEnable. gameObject.SetActive(true);
-#else
-        prefabToEnable.gameObject.SetActive(false);
-#endif
+        #if UNITY_ANDROID
+            prefabToEnable.SetActive(true);
+        #else
+            prefabToEnable.SetActive(false);
+        #endif
     }
 
 }
