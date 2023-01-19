@@ -46,11 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57a743722ee79ae4e9e557d8bf906e7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodePrefab: {fileID: 0}
-  _mazeSize: {x: 0, y: 0}
-  _nodeSize: 0
-  _playerPrefab: {fileID: 0}
-  _treasurePrefab: {fileID: 0}
+  _nodePrefab: {fileID: 8775671690344581252, guid: 4f0ab20dd28011d4480f435fca4fdd48, type: 3}
+  _mazeSize: {x: 20, y: 10}
+  _nodeSize: 0.5
+  _playerPrefab: {fileID: 1671632334522779131, guid: e5a4efb3969b53e4e8c8c222cfcad9d3, type: 3}
+  _treasurePrefab: {fileID: 5535137214519700201, guid: 16c56e91622108e42a64a065d5b7490d, type: 3}
 --- !u!114 &240248104585690724
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,8 +67,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _gridWorldSize: {x: 30, y: 30}
-  _distanceBetweenNodes: 0
-  pathRender: {fileID: 7405483286531819937, guid: 065e604411909a347b25dda7eed51601, type: 3}
 --- !u!114 &4026232155028177745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,3 +79,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e604479790f4bca48992e6b54da16c6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathRender: {fileID: 7405483286531819937, guid: 065e604411909a347b25dda7eed51601, type: 3}

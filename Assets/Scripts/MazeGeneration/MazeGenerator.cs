@@ -16,13 +16,14 @@ public class MazeGenerator : MonoBehaviour
     private GameObject _treasure;
     private GameObject _parentMaze;
     private Vector3 _initialPos;
- 
+    private const string PARENT_NAME = "ParentMaze";
+
     private void Awake()
     {
         _pathFinder  = GetComponent<GridPathFinder>();
         _parentMaze = new GameObject();
         _parentMaze.transform.SetParent(this.transform);
-        _parentMaze.name = "ParentMaze";
+        _parentMaze.name = PARENT_NAME;
     }
 
     public void StartMaze()
@@ -41,7 +42,7 @@ public class MazeGenerator : MonoBehaviour
 
     private IEnumerator PathfindingInitialization()
     {
-        _pathFinder.Grid.HidePath();
+        _pathFinder.HidePath();
         yield return new WaitForSeconds(0.2f);
         _pathFinder.Grid.CreateGrid();
         _pathFinder.FindPath(_initialPos, _treasure.transform.position);

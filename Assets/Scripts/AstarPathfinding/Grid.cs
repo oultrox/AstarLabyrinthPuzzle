@@ -7,26 +7,17 @@ public class Grid : MonoBehaviour
 {
     [SerializeField] private LayerMask _wallMask;
     [SerializeField] private Vector2 _gridWorldSize;
-    [SerializeField] private float _distanceBetweenNodes;
-    [SerializeField] private GameObject pathRender;
+    
+    private float _distanceBetweenNodes;
     private float _nodeRadius = 0.2f;
     private Node[,] _nodeArray;
-    private List<Node> _finalPath;
-
-    private Vector3 _pathPosition;
     private float _nodeDiameter;
     private int _gridSizeX, _gridSizeY;
-    private GameObject _gridDebuggerParent;
 
-    public List<Node> FinalPath { get => _finalPath; set => _finalPath = value; }
+    public Node[,] NodeArray { get => _nodeArray; set => _nodeArray = value; }
 
     private void Start()
     {
-        _gridDebuggerParent = new GameObject();
-        _gridDebuggerParent.transform.SetParent(this.transform);
-        _gridDebuggerParent.name = "PathDebugger";
-        _gridDebuggerParent.SetActive(false);
-        
         //Double the radius to get diameter
         _nodeDiameter = _nodeRadius * 2;
 
@@ -46,7 +37,7 @@ public class Grid : MonoBehaviour
             {
                 //Get the world co ordinates of the bottom left of the graph
                 Vector3 worldPoint = bottomLeft + Vector3.right * (x * _nodeDiameter + _nodeRadius) + Vector3.forward * (y * _nodeDiameter + _nodeRadius);
-                bool Wall = true;//Make the node a wall
+                bool Wall = true;
 
                 if (Physics.CheckSphere(worldPoint, _nodeRadius, _wallMask))
                 {
@@ -124,49 +115,10 @@ public class Grid : MonoBehaviour
     }
 
 
-    //TODO: Move this to GridPathFinder.
-    public void DrawPath()
-    {
-        if (_nodeArray != null)//If the grid is not empty
-        {
-            for (var i = _gridDebuggerParent.transform.childCount - 1; i >= 0; i--)
-            {
-                Destroy(_gridDebuggerParent.transform.GetChild(i).gameObject);
-            }
-
-            foreach (Node n in _nodeArray)//Loop through every node in the grid
-            {
-                //If the final path is not empty
-                if (_finalPath == null)
-                {
-                    continue;
-                }
-                
-                if (_finalPath.Contains(n))//If the current node is in the final path
-                {
-                    _pathPosition = n.Position;
-                    _pathPosition.y = 0.02f;
-                    Instantiate(pathRender, _pathPosition, Quaternion.identity, _gridDebuggerParent.transform);
-                }
-            }
-        }
-    }
-
-    public void ShowPath()
-    {
-        bool isActive = !_gridDebuggerParent.activeSelf;
-        _gridDebuggerParent.SetActive(isActive);
-    }
-
-    public void HidePath()
-    {
-        _gridDebuggerParent.SetActive(false);
-    }
-
     #region Gizmos
     private void OnDrawGizmos()
     {
-        //Draw a wire cube with the given dimensions from the Unity inspector
+        // We draw the Grid just for debug in here.
         Gizmos.DrawWireCube(transform.position, new Vector3(_gridWorldSize.x, 1, _gridWorldSize.y));
 
         if (_nodeArray != null)
@@ -181,17 +133,6 @@ public class Grid : MonoBehaviour
                 {
                     Gizmos.color = Color.yellow;
                 }
-
-
-                if (_finalPath != null)
-                {
-                    if (_finalPath.Contains(n))
-                    {
-                        Gizmos.color = Color.red;
-                    }
-
-                }
-
                 //Draw the node at the position of the node.
                 Gizmos.DrawCube(n.Position, Vector3.one * (_nodeDiameter - _distanceBetweenNodes));
             }

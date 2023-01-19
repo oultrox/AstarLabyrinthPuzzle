@@ -1,29 +1,37 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-//TODO: Implementar el path  aquí en vez de en el grid
 public class GridPathFinder : MonoBehaviour
 {
+    [SerializeField] private GameObject pathRender;
     private Grid _grid;
+    private List<Node> _finalPath;
+    private Vector3 _pathPosition;
+    private GameObject _gridDebuggerParent;
 
     public Grid Grid { get => _grid; set => _grid = value; }
 
     private void Awake()
     {
         _grid = GetComponent<Grid>();
+        _gridDebuggerParent = new GameObject();
+        _gridDebuggerParent.transform.SetParent(this.transform);
+        _gridDebuggerParent.name = "PathDebugger";
+        _gridDebuggerParent.SetActive(false);
     }
 
     public void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
     {
-        Node StartNode = _grid.NodeFromWorldPoint(a_StartPos);//Gets the node closest to the starting position
-        Node TargetNode = _grid.NodeFromWorldPoint(a_TargetPos);//Gets the node closest to the target position
+        Node StartNode = _grid.NodeFromWorldPoint(a_StartPos);
+        Node TargetNode = _grid.NodeFromWorldPoint(a_TargetPos);
 
-        List<Node> OpenList = new List<Node>();//List of nodes for the open list
-        HashSet<Node> ClosedList = new HashSet<Node>();//Hashset of nodes for the closed list
+        List<Node> OpenList = new List<Node>();
+        HashSet<Node> ClosedList = new HashSet<Node>();
 
-        OpenList.Add(StartNode);//Add the starting node to the open list to begin the program
+        OpenList.Add(StartNode);
 
         while (OpenList.Count > 0)//Whilst there is something in the open list
         {
@@ -64,7 +72,44 @@ public class GridPathFinder : MonoBehaviour
                 }
             }
         }
-        _grid.DrawPath();
+        DrawPath(_grid.NodeArray);
+    }
+
+    private void DrawPath(Node[,] nodeArray)
+    {
+        if (nodeArray != null)
+        {
+            for (var i = _gridDebuggerParent.transform.childCount - 1; i >= 0; i--)
+            {
+                Destroy(_gridDebuggerParent.transform.GetChild(i).gameObject);
+            }
+
+            foreach (Node n in nodeArray)
+            {
+                if (_finalPath == null)
+                {
+                    continue;
+                }
+
+                if (_finalPath.Contains(n))
+                {
+                    _pathPosition = n.Position;
+                    _pathPosition.y = 0.02f;
+                    Instantiate(pathRender, _pathPosition, Quaternion.identity, _gridDebuggerParent.transform);
+                }
+            }
+        }
+    }
+
+    public void ShowPath()
+    {
+        bool isActive = !_gridDebuggerParent.activeSelf;
+        _gridDebuggerParent.SetActive(isActive);
+    }
+
+    public void HidePath()
+    {
+        _gridDebuggerParent.SetActive(false);
     }
 
     void GetFinalPath(Node startingNode, Node endNode)
@@ -80,7 +125,7 @@ public class GridPathFinder : MonoBehaviour
 
         FinalPath.Reverse();//Reverse the path to get the correct order
 
-        _grid.FinalPath = FinalPath;//Set the final path
+        _finalPath = FinalPath;//Set the final path
 
     }
 
