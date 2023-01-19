@@ -17,7 +17,7 @@ public class MazeGenerator : MonoBehaviour
     private GameObject _player;
     private GameObject _treasure;
 
-    private void Start()
+    private void Awake()
     {
         _pathFinder  = GetComponent<MazePathFinder>();
     }
@@ -33,6 +33,13 @@ public class MazeGenerator : MonoBehaviour
         GenerateMaze(_mazeSize);
         InitializePlayer();
         InitializeTreasure();
+        StartCoroutine(PathfindingInitialization());
+    }
+
+    private IEnumerator PathfindingInitialization()
+    {
+        _grid.HidePath();
+        yield return new WaitForSeconds(0.2f);
         _grid.CreateGrid();
         _pathFinder.FindPath(_player.transform.position, _treasure.transform.position);
     }
@@ -155,6 +162,7 @@ public class MazeGenerator : MonoBehaviour
                 currentPath.RemoveAt(currentPath.Count - 1);
             }
         }
+        _grid.CreateGrid();
     }
 
     private void InitializePlayer()

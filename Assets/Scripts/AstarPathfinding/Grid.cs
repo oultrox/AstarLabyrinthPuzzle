@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -123,6 +124,11 @@ public class Grid : MonoBehaviour
         Debug.Log("Drawing path");
         if (NodeArray != null)//If the grid is not empty
         {
+            for (var i = _gridDebuggerParent.transform.childCount - 1; i >= 0; i--)
+            {
+                Destroy(_gridDebuggerParent.transform.GetChild(i).gameObject);
+            }
+
             foreach (Node n in NodeArray)//Loop through every node in the grid
             {
                 //If the final path is not empty
@@ -147,5 +153,45 @@ public class Grid : MonoBehaviour
         _gridDebuggerParent.SetActive(isActive);
     }
 
+    public void HidePath()
+    {
+        _gridDebuggerParent.SetActive(false);
+    }
+
+    #region Gizmos
+    private void OnDrawGizmos()
+    {
+
+        Gizmos.DrawWireCube(transform.position, new Vector3(vGridWorldSize.x, 1, vGridWorldSize.y));//Draw a wire cube with the given dimensions from the Unity inspector
+
+        if (NodeArray != null)//If the grid is not empty
+        {
+            foreach (Node n in NodeArray)//Loop through every node in the grid
+            {
+                if (n.bIsWall)//If the current node is a wall node
+                {
+                    Gizmos.color = Color.white;//Set the color of the node
+                }
+                else
+                {
+                    Gizmos.color = Color.yellow;//Set the color of the node
+                }
+
+
+                if (FinalPath != null)//If the final path is not empty
+                {
+                    if (FinalPath.Contains(n))//If the current node is in the final path
+                    {
+                        Gizmos.color = Color.red;//Set the color of that node
+                    }
+
+                }
+
+
+                Gizmos.DrawCube(n.vPosition, Vector3.one * (fNodeDiameter - fDistanceBetweenNodes));//Draw the node at the position of the node.
+            }
+        }
+    }
+    #endregion Gizmos
 
 }
