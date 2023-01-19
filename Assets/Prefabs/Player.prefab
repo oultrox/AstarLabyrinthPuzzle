@@ -130,4 +130,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 6
-  _gravity: -9.8
+  _gravity: -20
