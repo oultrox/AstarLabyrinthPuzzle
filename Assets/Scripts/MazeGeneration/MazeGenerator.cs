@@ -10,7 +10,7 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField] private float _nodeSize;
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private GameObject _treasurePrefab;
-    private MazePathFinder _pathFinder;
+    private GridPathFinder _pathFinder;
     private List<MazeNode> _nodes;
     private GameObject _player;
     private GameObject _treasure;
@@ -18,7 +18,7 @@ public class MazeGenerator : MonoBehaviour
 
     private void Awake()
     {
-        _pathFinder  = GetComponent<MazePathFinder>();
+        _pathFinder  = GetComponent<GridPathFinder>();
         _parentMaze = Instantiate(new GameObject("ParentMaze"), Vector3.zero, Quaternion.identity, transform);
     }
 

@@ -1,25 +1,32 @@
-
 using UnityEngine;
+
 public class Node
 {
-    public int iGridX;//X Position in the Node Array
-    public int iGridY;//Y Position in the Node Array
+    private int _posX;//X Position in the Node Array
+    private int _posY;//Y Position in the Node Array
+    private bool _isWall;//Tells the program if this node is being obstructed.
+    private Vector3 _position;//The world position of the node.
+    private Node _parentNode;//For the AStar algoritm, will store what node it previously came from so it cn trace the shortest path.
+    private int _pathCost;//The cost of moving to the next square.
+    private int _distanceCost;//The distance to the goal from this node.
 
-    public bool bIsWall;//Tells the program if this node is being obstructed.
-    public Vector3 vPosition;//The world position of the node.
-
-    public Node ParentNode;//For the AStar algoritm, will store what node it previously came from so it cn trace the shortest path.
-
-    public int igCost;//The cost of moving to the next square.
-    public int ihCost;//The distance to the goal from this node.
-
-    public int FCost { get { return igCost + ihCost; } }//Quick get function to add G cost and H Cost, and since we'll never need to edit FCost, we dont need a set function.
-
-    public Node(bool a_bIsWall, Vector3 a_vPos, int a_igridX, int a_igridY)//Constructor
+    //Constructor
+    public Node(bool isWall, Vector3 position, int posX, int posY)
     {
-        bIsWall = a_bIsWall;//Tells the program if this node is being obstructed.
-        vPosition = a_vPos;//The world position of the node.
-        iGridX = a_igridX;//X Position in the Node Array
-        iGridY = a_igridY;//Y Position in the Node Array
+        IsWall = isWall;//Tells the program if this node is being obstructed.
+        Position = position;//The world position of the node.
+        PosX = posX;//X Position in the Node Array
+        PosY = posY;//Y Position in the Node Array
     }
+
+    #region properties
+    public int FCost { get { return PathCost + DistanceCost; } }
+    public int PosX { get => _posX; set => _posX = value; }
+    public int PosY { get => _posY; set => _posY = value; }
+    public bool IsWall { get => _isWall; set => _isWall = value; }
+    public Node ParentNode { get => _parentNode; set => _parentNode = value; }
+    public int PathCost { get => _pathCost; set => _pathCost = value; }
+    public int DistanceCost { get => _distanceCost; set => _distanceCost = value; }
+    public Vector3 Position { get => _position; set => _position = value; }
+    #endregion
 }

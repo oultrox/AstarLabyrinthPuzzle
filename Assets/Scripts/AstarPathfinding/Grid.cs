@@ -55,15 +55,15 @@ public class Grid : MonoBehaviour
     }
 
     //Function that gets the neighboring nodes of the given node.
-    public List<Node> GetNeighboringNodes(Node a_NeighborNode)
+    public List<Node> GetNeighboringNodes(Node neighborNode)
     {
         List<Node> NeighborList = new List<Node>();//Make a new list of all available neighbors.
         int icheckX;//Variable to check if the XPosition is within range of the node array to avoid out of range errors.
         int icheckY;//Variable to check if the YPosition is within range of the node array to avoid out of range errors.
 
         //Check the right side of the current node.
-        icheckX = a_NeighborNode.iGridX + 1;
-        icheckY = a_NeighborNode.iGridY;
+        icheckX = neighborNode.PosX + 1;
+        icheckY = neighborNode.PosY;
         if (icheckX >= 0 && icheckX < _gridSizeX)//If the XPosition is in range of the array
         {
             if (icheckY >= 0 && icheckY < _gridSizeY)//If the YPosition is in range of the array
@@ -72,8 +72,8 @@ public class Grid : MonoBehaviour
             }
         }
         //Check the Left side of the current node.
-        icheckX = a_NeighborNode.iGridX - 1;
-        icheckY = a_NeighborNode.iGridY;
+        icheckX = neighborNode.PosX - 1;
+        icheckY = neighborNode.PosY;
         if (icheckX >= 0 && icheckX < _gridSizeX)//If the XPosition is in range of the array
         {
             if (icheckY >= 0 && icheckY < _gridSizeY)//If the YPosition is in range of the array
@@ -82,8 +82,8 @@ public class Grid : MonoBehaviour
             }
         }
         //Check the Top side of the current node.
-        icheckX = a_NeighborNode.iGridX;
-        icheckY = a_NeighborNode.iGridY + 1;
+        icheckX = neighborNode.PosX;
+        icheckY = neighborNode.PosY + 1;
         if (icheckX >= 0 && icheckX < _gridSizeX)//If the XPosition is in range of the array
         {
             if (icheckY >= 0 && icheckY < _gridSizeY)//If the YPosition is in range of the array
@@ -92,8 +92,8 @@ public class Grid : MonoBehaviour
             }
         }
         //Check the Bottom side of the current node.
-        icheckX = a_NeighborNode.iGridX;
-        icheckY = a_NeighborNode.iGridY - 1;
+        icheckX = neighborNode.PosX;
+        icheckY = neighborNode.PosY - 1;
         if (icheckX >= 0 && icheckX < _gridSizeX)//If the XPosition is in range of the array
         {
             if (icheckY >= 0 && icheckY < _gridSizeY)//If the YPosition is in range of the array
@@ -106,10 +106,10 @@ public class Grid : MonoBehaviour
     }
 
     //Gets the closest node to the given world position.
-    public Node NodeFromWorldPoint(Vector3 a_vWorldPos)
+    public Node NodeFromWorldPoint(Vector3 worldPos)
     {
-        float ixPos = ((a_vWorldPos.x + _gridWorldSize.x / 2) / _gridWorldSize.x);
-        float iyPos = ((a_vWorldPos.z + _gridWorldSize.y / 2) / _gridWorldSize.y);
+        float ixPos = ((worldPos.x + _gridWorldSize.x / 2) / _gridWorldSize.x);
+        float iyPos = ((worldPos.z + _gridWorldSize.y / 2) / _gridWorldSize.y);
 
         ixPos = Mathf.Clamp01(ixPos);
         iyPos = Mathf.Clamp01(iyPos);
@@ -121,7 +121,7 @@ public class Grid : MonoBehaviour
     }
 
 
-    //TODO: Move this to MazePathFinder.
+    //TODO: Move this to GridPathFinder.
     public void DrawPath()
     {
         if (_nodeArray != null)//If the grid is not empty
@@ -141,7 +141,7 @@ public class Grid : MonoBehaviour
                 
                 if (_finalPath.Contains(n))//If the current node is in the final path
                 {
-                    _pathPosition = n.vPosition;
+                    _pathPosition = n.Position;
                     _pathPosition.y = 0.02f;
                     Instantiate(pathRender, _pathPosition, Quaternion.identity, _gridDebuggerParent.transform);
                 }
@@ -170,7 +170,7 @@ public class Grid : MonoBehaviour
         {
             foreach (Node n in _nodeArray)//Loop through every node in the grid
             {
-                if (n.bIsWall)//If the current node is a wall node
+                if (n.IsWall)//If the current node is a wall node
                 {
                     Gizmos.color = Color.white;//Set the color of the node
                 }
@@ -190,7 +190,7 @@ public class Grid : MonoBehaviour
                 }
 
 
-                Gizmos.DrawCube(n.vPosition, Vector3.one * (_nodeDiameter - _distanceBetweenNodes));//Draw the node at the position of the node.
+                Gizmos.DrawCube(n.Position, Vector3.one * (_nodeDiameter - _distanceBetweenNodes));//Draw the node at the position of the node.
             }
         }
     }
