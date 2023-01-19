@@ -109,6 +109,16 @@ public class GridPathFinder : MonoBehaviour
         }
     }
 
+    public IEnumerator PathfindingInitialization(Vector3 initialPos, Vector3 targetPos)
+    {
+        HidePath();
+
+        //Wait for another frame to generate the grid based on the maze
+        yield return new WaitForSeconds(0f);
+        _grid.CreateGrid();
+        FindPath(initialPos, targetPos);
+    }
+
     public void ShowPath()
     {
         bool isActive = !_gridDebuggerParent.activeSelf;

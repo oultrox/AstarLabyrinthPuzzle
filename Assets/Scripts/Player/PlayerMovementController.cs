@@ -25,9 +25,9 @@ public class PlayerMovementController : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
         _moveAction = _playerInput.actions["Movement"];
 
-        #if UNITY_ANDROID
-            ToggleTiltMovement();
-        #endif
+#if UNITY_ANDROID
+         ToggleTiltMovement();
+#endif
 
     }
 
