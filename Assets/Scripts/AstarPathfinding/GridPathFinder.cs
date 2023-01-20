@@ -11,10 +11,14 @@ public class GridPathFinder : MonoBehaviour
     private List<Node> _finalPath;
     private Vector3 _pathPosition;
     private GameObject _gridDebuggerParent;
+    private bool _isGenerating = false;
+    
 
     #region Properties
     public Grid Grid { get => _grid; set => _grid = value; }
+    public bool IsGenerating { get => _isGenerating; }
     #endregion
+
 
     private void Awake()
     {
@@ -81,6 +85,7 @@ public class GridPathFinder : MonoBehaviour
             }
         }
         DrawPath(_grid.NodeArray);
+        
     }
 
     private void DrawPath(Node[,] nodeArray)
@@ -109,19 +114,20 @@ public class GridPathFinder : MonoBehaviour
     internal IEnumerator InitializeGrid()
     {
         HidePath();
-        yield return new WaitForSeconds(0f);
+        yield return null;
         Grid.CreateGrid();
     }
 
     internal IEnumerator FindSolution(Vector3 initialPos, Vector3 targetPos)
     {
+        _isGenerating = true;
         HidePath();
         ClearPath();
-         
-        yield return new WaitForSeconds(0.1f);
+     
         FindPath(initialPos, targetPos);
-        yield return new WaitForSeconds(0f);
         ShowPath();
+        _isGenerating = false;
+        yield return null;
     }
 
     public void ShowPath()

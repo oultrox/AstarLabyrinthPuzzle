@@ -29,11 +29,14 @@ public class MazeGenerator : MonoBehaviour
     //Referenced via GUI OnClick() Event
     public void InitializeMaze()
     {
+        if(_pathFinder.IsGenerating)
+        {
+            return;
+        }
         if(_nodes != null)
         {
             ClearMaze();
         }
-
         GenerateMaze(_mazeSize);
         InitializePlayer();
         InitializeTreasure();
