@@ -26,7 +26,8 @@ public class MazeGenerator : MonoBehaviour
         _parentMaze.name = PARENT_NAME;
     }
 
-    public void StartMaze()
+    //Referenced via GUI OnClick() Event
+    public void InitializeMaze()
     {
         if(_nodes != null)
         {
@@ -48,6 +49,7 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
+    //Referenced via GUI OnClick() Event
     public void CreateMazeSolution()
     {
         _initialPos = _player.transform.position;

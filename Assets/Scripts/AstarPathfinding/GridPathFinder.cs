@@ -117,8 +117,8 @@ public class GridPathFinder : MonoBehaviour
     {
         HidePath();
         ClearPath();
-
-        yield return new WaitForSeconds(0f);
+         
+        yield return new WaitForSeconds(0.1f);
         FindPath(initialPos, targetPos);
         yield return new WaitForSeconds(0f);
         ShowPath();
@@ -126,9 +126,7 @@ public class GridPathFinder : MonoBehaviour
 
     public void ShowPath()
     {
-        //Log
-        bool isActive = !_gridDebuggerParent.activeSelf;
-        _gridDebuggerParent.SetActive(isActive);
+        _gridDebuggerParent.SetActive(true);
     }
 
     private void ClearPath()
