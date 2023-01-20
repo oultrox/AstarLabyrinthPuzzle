@@ -640,7 +640,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900170316}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33.899384, y: 81.54403, z: -109.05476}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1488,7 +1488,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2068730209}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.7536407, y: 3.278165, z: -3.6016333}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1593,37 +1593,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 240248104585690724, guid: 726239688167ce8438680b71b8ebb942, type: 3}
-      propertyPath: _nodeRadius
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 240248104585690724, guid: 726239688167ce8438680b71b8ebb942, type: 3}
-      propertyPath: _gridWorldSize.x
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 240248104585690724, guid: 726239688167ce8438680b71b8ebb942, type: 3}
-      propertyPath: _gridWorldSize.y
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 240248104585690724, guid: 726239688167ce8438680b71b8ebb942, type: 3}
-      propertyPath: _distanceBetweenNodes
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 7360337442566816745, guid: 726239688167ce8438680b71b8ebb942, type: 3}
       propertyPath: m_Name
       value: MazeController
-      objectReference: {fileID: 0}
-    - target: {fileID: 7360337442566816746, guid: 726239688167ce8438680b71b8ebb942, type: 3}
-      propertyPath: _nodeSize
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7360337442566816746, guid: 726239688167ce8438680b71b8ebb942, type: 3}
-      propertyPath: _mazeSize.x
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7360337442566816746, guid: 726239688167ce8438680b71b8ebb942, type: 3}
-      propertyPath: _mazeSize.y
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7360337442566816747, guid: 726239688167ce8438680b71b8ebb942, type: 3}
       propertyPath: m_RootOrder
