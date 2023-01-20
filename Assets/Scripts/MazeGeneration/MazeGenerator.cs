@@ -55,8 +55,11 @@ public class MazeGenerator : MonoBehaviour
     //Referenced via GUI OnClick() Event
     public void CreateMazeSolution()
     {
-        _initialPos = _player.transform.position;
-        StartCoroutine(_pathFinder.FindSolution(_initialPos, _treasure.transform.position));
+        if (_player != null)
+        {
+            _initialPos = _player.transform.position;
+            StartCoroutine(_pathFinder.FindSolution(_initialPos, _treasure.transform.position));
+        }
     }
 
     private void GenerateMaze(Vector2Int size)
