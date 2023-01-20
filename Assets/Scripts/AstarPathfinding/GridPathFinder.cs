@@ -11,12 +11,12 @@ public class GridPathFinder : MonoBehaviour
     private List<Node> _finalPath;
     private Vector3 _pathPosition;
     private GameObject _gridDebuggerParent;
-    private bool _isGenerating = false;
+    private bool _isGeneratingPath = false;
     
 
     #region Properties
     public Grid Grid { get => _grid; set => _grid = value; }
-    public bool IsGenerating { get => _isGenerating; }
+    public bool IsGeneratingPath { get => _isGeneratingPath; }
     #endregion
 
 
@@ -120,13 +120,13 @@ public class GridPathFinder : MonoBehaviour
 
     internal IEnumerator FindSolution(Vector3 initialPos, Vector3 targetPos)
     {
-        _isGenerating = true;
+        _isGeneratingPath = true;
         HidePath();
         ClearPath();
      
         FindPath(initialPos, targetPos);
         ShowPath();
-        _isGenerating = false;
+        _isGeneratingPath = false;
         yield return null;
     }
 

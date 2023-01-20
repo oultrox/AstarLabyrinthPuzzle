@@ -29,7 +29,7 @@ public class MazeGenerator : MonoBehaviour
     //Referenced via GUI OnClick() Event
     public void InitializeMaze()
     {
-        if(_pathFinder.IsGenerating)
+        if(_pathFinder.IsGeneratingPath)
         {
             return;
         }
