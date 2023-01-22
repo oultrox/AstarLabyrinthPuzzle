@@ -80,4 +80,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e604479790f4bca48992e6b54da16c6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathRender: {fileID: 7405483286531819937, guid: 065e604411909a347b25dda7eed51601, type: 3}
+  _pathDrawerPrefab: {fileID: 2702335981650459624, guid: eb7fa76668f28a8439843d749ddb72bf, type: 3}
