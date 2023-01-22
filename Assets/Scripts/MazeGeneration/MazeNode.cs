@@ -2,20 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MazeNodeState
-{
-    Available,
-    Current,
-    Completed
-}
 
-public class MazeNode : MonoBehaviour
+namespace Gamaga.Scripts.MazeGeneration
 {
-    [SerializeField] private GameObject[] _walls;
-
-    public void RemoveWall(int wallToRemove)
+    public class MazeNode : MonoBehaviour
     {
-        _walls[wallToRemove].gameObject.SetActive(false);
-    }
+        [SerializeField] private GameObject[] _walls;
 
+        public void RemoveWall(int wallToRemove)
+        {
+            _walls[wallToRemove].SetActive(false);
+        }
+
+    }
 }
+
+
