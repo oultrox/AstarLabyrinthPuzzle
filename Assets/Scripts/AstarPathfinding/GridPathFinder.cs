@@ -6,13 +6,12 @@ namespace Gamaga.Scripts.AstarPathfinding
 {
     public class GridPathFinder : MonoBehaviour, IPathGenerator
     {
-        [SerializeField] private GameObject pathRender;
+        [SerializeField] private GameObject _pathDrawerPrefab;
+        private PathDrawer _pathDrawer;
         private Grid _grid;
         private List<Node> _finalPath;
-        private Vector3 _pathPosition;
-        private GameObject _gridDebuggerParent;
         private bool _isGeneratingPath = false;
-        private const string PATH_DEBUGGER = "PathDebugger";
+      
 
         #region Properties
         public Grid Grid { get => _grid; set => _grid = value; }
@@ -23,10 +22,7 @@ namespace Gamaga.Scripts.AstarPathfinding
         private void Awake()
         {
             _grid = GetComponent<Grid>();
-            _gridDebuggerParent = new GameObject();
-            _gridDebuggerParent.transform.SetParent(this.transform);
-            _gridDebuggerParent.name = PATH_DEBUGGER;
-            _gridDebuggerParent.SetActive(false);
+            _pathDrawer = Instantiate(_pathDrawerPrefab).GetComponent<PathDrawer>();
         }
 
         private void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
@@ -84,36 +80,12 @@ namespace Gamaga.Scripts.AstarPathfinding
                     }
                 }
             }
-            DrawPath(_grid.NodeArray);
-
+            _pathDrawer.DrawPath(_grid.NodeArray, _finalPath);
         }
-
-        private void DrawPath(Node[,] nodeArray)
-        {
-            if (nodeArray != null)
-            {
-                ClearPath();
-                foreach (Node n in nodeArray)
-                {
-                    if (_finalPath == null)
-                    {
-                        continue;
-                    }
-
-                    if (_finalPath.Contains(n))
-                    {
-                        _pathPosition = n.Position;
-                        _pathPosition.y = 0.02f;
-                        Instantiate(pathRender, _pathPosition, Quaternion.identity, _gridDebuggerParent.transform);
-                    }
-                }
-            }
-        }
-
 
         public IEnumerator InitializeGrid()
         {
-            HidePath();
+            _pathDrawer.HidePath();
             yield return null;
             Grid.CreateGrid();
         }
@@ -121,32 +93,13 @@ namespace Gamaga.Scripts.AstarPathfinding
         public IEnumerator FindSolution(Vector3 initialPos, Vector3 targetPos)
         {
             _isGeneratingPath = true;
-            HidePath();
-            ClearPath();
+            _pathDrawer.HidePath();
+            _pathDrawer.ClearPath();
 
             FindPath(initialPos, targetPos);
-            ShowPath();
+            _pathDrawer.ShowPath();
             _isGeneratingPath = false;
             yield return null;
-        }
-
-        private void ShowPath()
-        {
-            _gridDebuggerParent.SetActive(true);
-        }
-
-        private void ClearPath()
-        {
-            for (var i = _gridDebuggerParent.transform.childCount - 1; i >= 0; i--)
-            {
-                Destroy(_gridDebuggerParent.transform.GetChild(i).gameObject);
-            }
-        }
-
-
-        private void HidePath()
-        {
-            _gridDebuggerParent.SetActive(false);
         }
 
         private void GetFinalPath(Node startingNode, Node endNode)
@@ -170,10 +123,7 @@ namespace Gamaga.Scripts.AstarPathfinding
         {
             int valueX = Mathf.Abs(nodeA.PosX - nodeB.PosX);
             int valueY = Mathf.Abs(nodeA.PosY - nodeB.PosY);
-
             return valueX + valueY;
-
-
         }
     }
 }

@@ -1593,6 +1593,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4026232155028177745, guid: 726239688167ce8438680b71b8ebb942, type: 3}
+      propertyPath: _pathDrawer
+      value: 
+      objectReference: {fileID: 2702335981650459625, guid: eb7fa76668f28a8439843d749ddb72bf, type: 3}
+    - target: {fileID: 4026232155028177745, guid: 726239688167ce8438680b71b8ebb942, type: 3}
+      propertyPath: _pathDrawerPrefab
+      value: 
+      objectReference: {fileID: 2702335981650459624, guid: eb7fa76668f28a8439843d749ddb72bf, type: 3}
     - target: {fileID: 7360337442566816745, guid: 726239688167ce8438680b71b8ebb942, type: 3}
       propertyPath: m_Name
       value: MazeController
