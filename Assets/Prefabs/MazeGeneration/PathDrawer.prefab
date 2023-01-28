@@ -44,4 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95a4727a5d6290b4cbeab1fed4e5e6f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathRender: {fileID: 7405483286531819937, guid: 065e604411909a347b25dda7eed51601, type: 3}
+  _pathRender: {fileID: 7405483286531819937, guid: 065e604411909a347b25dda7eed51601, type: 3}
+  _isUsingPool: 1

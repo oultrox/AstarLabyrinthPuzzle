@@ -28,7 +28,7 @@ namespace Gamaga.Scripts.AstarPathfinding
 
         public IEnumerator InitializeGrid()
         {
-            _pathDrawer.HidePath();
+            _pathDrawer.ClearPath();
             yield return null;
             Grid.CreateGrid();
         }
@@ -36,11 +36,8 @@ namespace Gamaga.Scripts.AstarPathfinding
         public IEnumerator FindSolution(Vector3 initialPos, Vector3 targetPos)
         {
             _isGeneratingPath = true;
-            _pathDrawer.HidePath();
-            _pathDrawer.ClearPath();
             _finalPath = _aStarSolution.FindPathSolution(initialPos, targetPos, _grid);
             _pathDrawer.DrawPath(_grid.NodeArray, _finalPath);
-            _pathDrawer.ShowPath();
             _isGeneratingPath = false;
             yield return null;
         }

@@ -19,7 +19,6 @@ public class PathDrawer : MonoBehaviour
         _gridDebuggerParent = new GameObject();
         _gridDebuggerParent.transform.SetParent(this.transform);
         _gridDebuggerParent.name = PATH_DEBUGGER;
-        _gridDebuggerParent.SetActive(false);
 
         _pathPool = new ObjectPool<GameObject>(() =>
         {
@@ -32,8 +31,8 @@ public class PathDrawer : MonoBehaviour
             GameObject.SetActive(false);
         }, GameObject =>
         {
-            Destroy(GameObject);
-        }, false, 50, 200);
+            GameObject.SetActive(false);
+        }, false, 350, 1000);
     }
 
     internal void ShowPath()
@@ -43,12 +42,12 @@ public class PathDrawer : MonoBehaviour
 
     internal void ClearPath()
     {
-        for (var i = _gridDebuggerParent.transform.childCount - 1; i >= 0; i--)
+        for (var i = _pathPool.CountActive - 1; i >= 0; i--)
         {
-            if (!_isUsingPool)
-                Destroy(_gridDebuggerParent.transform.GetChild(i).gameObject);
-            else
+            if (_isUsingPool)
                 _pathPool.Release(_gridDebuggerParent.transform.GetChild(i).gameObject);
+            else
+                Destroy(_gridDebuggerParent.transform.GetChild(i).gameObject);
         }
     }
 
@@ -61,7 +60,8 @@ public class PathDrawer : MonoBehaviour
     {
         if (nodeArray != null)
         {
-            ClearPath();
+            if(_pathPool.CountActive > 0)
+                ClearPath();
             foreach (Node n in nodeArray)
             {
                 if (finalTarget == null)
@@ -84,8 +84,9 @@ public class PathDrawer : MonoBehaviour
         _pathPosition.y = 0.02f;
         if (_isUsingPool)
         {
-            var pathSpawned = _pathPool.Get();
-            pathSpawned.transform.position = _pathPosition;
+            var prefabPath = _pathPool.Get();
+            prefabPath.transform.position = _pathPosition;
+            prefabPath.transform.parent = _gridDebuggerParent.transform;
         }
         else
         {
