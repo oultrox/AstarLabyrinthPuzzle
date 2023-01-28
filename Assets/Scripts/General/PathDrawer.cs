@@ -2,13 +2,17 @@ using Gamaga.Scripts.AstarPathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class PathDrawer : MonoBehaviour
 {
-    [SerializeField] private GameObject pathRender;
+    [SerializeField] private GameObject _pathRender;
+    [SerializeField] private bool _isUsingPool;
     private GameObject _gridDebuggerParent;
     private const string PATH_DEBUGGER = "PathDebugger";
     private Vector3 _pathPosition;
+    private ObjectPool<GameObject> _pathPool;
+
 
     private void Awake()
     {
@@ -16,6 +20,20 @@ public class PathDrawer : MonoBehaviour
         _gridDebuggerParent.transform.SetParent(this.transform);
         _gridDebuggerParent.name = PATH_DEBUGGER;
         _gridDebuggerParent.SetActive(false);
+
+        _pathPool = new ObjectPool<GameObject>(() =>
+        {
+            return Instantiate(_pathRender);
+        }, GameObject =>
+        {
+            GameObject.SetActive(true);
+        }, GameObject =>
+        {
+            GameObject.SetActive(false);
+        }, GameObject =>
+        {
+            Destroy(GameObject);
+        }, false, 50, 200);
     }
 
     internal void ShowPath()
@@ -27,7 +45,10 @@ public class PathDrawer : MonoBehaviour
     {
         for (var i = _gridDebuggerParent.transform.childCount - 1; i >= 0; i--)
         {
-            Destroy(_gridDebuggerParent.transform.GetChild(i).gameObject);
+            if (!_isUsingPool)
+                Destroy(_gridDebuggerParent.transform.GetChild(i).gameObject);
+            else
+                _pathPool.Release(_gridDebuggerParent.transform.GetChild(i).gameObject);
         }
     }
 
@@ -50,11 +71,25 @@ public class PathDrawer : MonoBehaviour
 
                 if (finalTarget.Contains(n))
                 {
-                    _pathPosition = n.Position;
-                    _pathPosition.y = 0.02f;
-                    Instantiate(pathRender, _pathPosition, Quaternion.identity, _gridDebuggerParent.transform);
+                    SpawnPathInNode(n);
+
                 }
             }
+        }
+    }
+
+    private void SpawnPathInNode(Node n)
+    {
+        _pathPosition = n.Position;
+        _pathPosition.y = 0.02f;
+        if (_isUsingPool)
+        {
+            var pathSpawned = _pathPool.Get();
+            pathSpawned.transform.position = _pathPosition;
+        }
+        else
+        {
+            Instantiate(_pathRender, _pathPosition, Quaternion.identity, _gridDebuggerParent.transform);
         }
     }
 }
