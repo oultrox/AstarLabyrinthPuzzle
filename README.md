@@ -1,2 +1,2 @@
-# A* star laberynth game with gyroscope.
+# A* star labyrinth game with gyroscope.
  
