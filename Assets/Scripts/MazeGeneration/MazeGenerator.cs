@@ -11,6 +11,7 @@ namespace Gamaga.Scripts.MazeGeneration
         [SerializeField] private float _nodeSize;
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private GameObject _treasurePrefab;
+        
         private IPathGenerator _pathFinder;
         private List<MazeNode> _nodes;
         private GameObject _player;
