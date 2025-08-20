@@ -1,12 +1,13 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Gamaga.Scripts.AstarPathfinding;
 
-namespace Gamaga.Scripts.AstarPathfinding
+namespace AstarPathfinding
 {
     public interface IPathGenerator
     {
         bool IsGeneratingPath { get; }
-        IEnumerator InitializeGrid();
-        IEnumerator FindSolution(Vector3 startPos, Vector3 endPos);
+        Task InitializeGridAsync();
+        Task<List<Node>> FindSolutionAsync(IEntitySpawner entitySpawner);
     }
 }

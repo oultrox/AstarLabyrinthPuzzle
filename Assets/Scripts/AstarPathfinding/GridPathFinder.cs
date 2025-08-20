@@ -1,47 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Gamaga.Scripts.AstarPathfinding;
 using UnityEngine;
+using Grid = Gamaga.Scripts.AstarPathfinding.Grid;
 
-namespace Gamaga.Scripts.AstarPathfinding
+namespace AstarPathfinding
 {
-    public class GridPathFinder : MonoBehaviour, IPathGenerator
+    public class GridPathFinder : IPathGenerator
     {
-        [SerializeField] private GameObject _pathDrawerPrefab;
-        private AStar _aStarSolution = new AStar();
+        private AStar _aStar = new();
         private PathDrawer _pathDrawer;
         private Grid _grid;
-        private List<Node> _finalPath;
-        private bool _isGeneratingPath = false;
-      
-
-        #region Properties
-        public Grid Grid { get => _grid; set => _grid = value; }
-        public bool IsGeneratingPath { get => _isGeneratingPath; }
-        #endregion
-
-
-        private void Awake()
+        public bool IsGeneratingPath { get; private set; }
+    
+        public GridPathFinder(Grid grid, PathDrawer pathDrawer)
         {
-            _grid = GetComponent<Grid>();
-            _pathDrawer = Instantiate(_pathDrawerPrefab).GetComponent<PathDrawer>();
+            _grid = grid;
+            _pathDrawer = pathDrawer;
         }
-
-        public IEnumerator InitializeGrid()
+    
+        public async Task InitializeGridAsync()
         {
+            IsGeneratingPath = true;
             _pathDrawer.ClearPath();
-            yield return null;
-            Grid.CreateGrid();
+            
+            // Simulate async grid creation without blocking
+            await Task.Yield();
+            _grid.CreateGrid();
+
+            IsGeneratingPath = false;
         }
 
-        public IEnumerator FindSolution(Vector3 initialPos, Vector3 targetPos)
+        public async Task<List<Node>> FindSolutionAsync(IEntitySpawner spawner)
         {
-            _isGeneratingPath = true;
-            _finalPath = _aStarSolution.FindPathSolution(initialPos, targetPos, _grid);
-            _pathDrawer.DrawPath(_grid.NodeArray, _finalPath);
-            _isGeneratingPath = false;
-            yield return null;
+            Vector3 start = spawner.PlayerPosition;
+            Vector3 end = spawner.TreasurePosition;
+
+            var finalPath = _aStar.FindPathSolution(start, end, _grid);
+            _pathDrawer.DrawPath(_grid.NodeArray, finalPath);
+
+            await Task.Yield(); // simulate async
+            return finalPath;
         }
     }
 }
-
-

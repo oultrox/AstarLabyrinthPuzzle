@@ -5,9 +5,14 @@ namespace Gamaga.Scripts.AstarPathfinding
 {
     public class AStar
     {
-
         public List<Node> FindPathSolution(Vector3 startPos, Vector3 targetPos, Grid grid)
         {
+            if (!grid.IsCreated)
+            {
+                Debug.LogWarning("Grid is not created");
+                return null;
+            }
+            
             Node startNode = grid.NodeFromWorldPoint(startPos);
             Node targetNode = grid.NodeFromWorldPoint(targetPos);
 

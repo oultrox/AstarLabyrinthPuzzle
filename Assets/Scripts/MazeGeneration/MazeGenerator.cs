@@ -1,50 +1,37 @@
-using Gamaga.Scripts.AstarPathfinding;
 using System.Collections.Generic;
+using Gamaga.Scripts.MazeGeneration;
 using UnityEngine;
 
-namespace Gamaga.Scripts.MazeGeneration
+namespace MazeGeneration
 {
-    public class MazeGenerator : MonoBehaviour
+    /// <summary>
+    /// In charge of generating the maze with a node-based system.
+    /// </summary>
+    public class MazeGenerator : MonoBehaviour, IMazeGenerator
     {
         [SerializeField] private MazeNode _nodePrefab;
         [SerializeField] private Vector2Int _mazeSize;
         [SerializeField] private float _nodeSize;
-        [SerializeField] private GameObject _playerPrefab;
-        [SerializeField] private GameObject _treasurePrefab;
-        
-        private IPathGenerator _pathFinder;
         private List<MazeNode> _nodes;
-        private GameObject _player;
-        private GameObject _treasure;
         private GameObject _parentMaze;
-        private Vector3 _initialPos;
         private const string PARENT_NAME = "ParentMaze";
 
         private void Awake()
         {
-            _pathFinder = GetComponent<IPathGenerator>();
             _parentMaze = new GameObject();
             _parentMaze.transform.SetParent(this.transform);
             _parentMaze.name = PARENT_NAME;
         }
-
-        //Referenced via GUI OnClick() Event
+        
         public void InitializeMaze()
         {
-            if (_pathFinder.IsGeneratingPath)
-            {
-                return;
-            }
             if (_nodes != null)
             {
                 ClearMaze();
             }
             GenerateMaze(_mazeSize);
-            InitializePlayer();
-            InitializeTreasure();
-            StartCoroutine(_pathFinder.InitializeGrid());
         }
-
+        
         private void ClearMaze()
         {
             _nodes.Clear();
@@ -53,17 +40,7 @@ namespace Gamaga.Scripts.MazeGeneration
                 Destroy(_parentMaze.transform.GetChild(i).gameObject);
             }
         }
-
-        //Referenced via GUI OnClick() Event
-        public void CreateMazeSolution()
-        {
-            if (_player != null)
-            {
-                _initialPos = _player.transform.position;
-                StartCoroutine(_pathFinder.FindSolution(_initialPos, _treasure.transform.position));
-            }
-        }
-
+        
         private void GenerateMaze(Vector2Int size)
         {
             _nodes = new List<MazeNode>();
@@ -173,40 +150,26 @@ namespace Gamaga.Scripts.MazeGeneration
             }
         }
 
-        private void InitializePlayer()
+        public Vector3 GetStartPosition()
         {
-            var nodePosition = _nodes[0].transform.position;
-            nodePosition.y = 0.02f;
-            _initialPos = nodePosition;
-            if (_player == null)
-            {
-                _player = Instantiate(_playerPrefab, nodePosition, Quaternion.identity);
-            }
-            else
-            {
-                CharacterController charController = _player.GetComponent<CharacterController>();
-                charController.enabled = false;
-                charController.transform.position = nodePosition;
-                charController.enabled = true;
-            }
+            return GetFirstNodePosition();
         }
 
-        private void InitializeTreasure()
+        public Vector3 GetEndGoalPosition()
         {
-            int lastIndex = _nodes.Count - 1;
-            var nodePosition = _nodes[lastIndex].transform.position;
-            nodePosition.y = 0.33f;
-            if (_treasure == null)
-            {
-                _treasure = Instantiate(_treasurePrefab, nodePosition, Quaternion.identity);
-            }
-            else
-            {
-                _treasure.transform.position = nodePosition;
-                _treasure.SetActive(true);
-            }
+            return GetLastNodePosition();
         }
-
+        
+        Vector3 GetFirstNodePosition()
+        {
+            return _nodes[0].transform.position;
+        }
+        
+        Vector3 GetLastNodePosition()
+        {
+            if (_nodes.Count == 0) return Vector3.zero;
+            return _nodes[^1].transform.position;
+        }
     }
 }
 

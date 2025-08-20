@@ -16,7 +16,9 @@ namespace Gamaga.Scripts.AstarPathfinding
         private int _gridSizeX, _gridSizeY;
 
         public Node[,] NodeArray { get => _nodeArray; set => _nodeArray = value; }
-
+        public bool IsCreated { get; private set;}
+            
+        
         private void Start()
         {
             //Double the radius to get diameter
@@ -36,7 +38,7 @@ namespace Gamaga.Scripts.AstarPathfinding
             {
                 for (int y = 0; y < _gridSizeY; y++)
                 {
-                    //Get the world co ordinates of the bottom left of the graph
+                    //Get the world coordinates of the bottom left of the graph
                     Vector3 worldPoint = bottomLeft + Vector3.right * (x * _nodeDiameter + _nodeRadius) + Vector3.forward * (y * _nodeDiameter + _nodeRadius);
                     bool Wall = true;
 
@@ -48,6 +50,8 @@ namespace Gamaga.Scripts.AstarPathfinding
                     _nodeArray[x, y] = new Node(Wall, worldPoint, x, y);
                 }
             }
+
+            IsCreated = true;
         }
 
         public List<Node> GetNeighborNode(Node neighborNode)
