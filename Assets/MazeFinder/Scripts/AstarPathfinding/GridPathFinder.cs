@@ -13,7 +13,7 @@ namespace AstarPathfinding
         private PathDrawer _pathDrawer;
         private GridPathBuilder _gridBuilder;
         private IEntitySpawner _spawner;
-        private EventBinder<ShowMazePathEvent> _showMazePathBinder;
+        private EventListener<ShowMazePathEvent> _showMazePathListener;
         
         public bool IsGeneratingPath { get; private set; }
         
@@ -52,16 +52,16 @@ namespace AstarPathfinding
         
         void RegisterEvents()
         {
-            _showMazePathBinder = new EventBinder<ShowMazePathEvent>(() =>
+            _showMazePathListener = new EventListener<ShowMazePathEvent>(() =>
             {
                 _ = FindSolutionAsync().ContinueWith(t =>
                 {
                     if (t.Exception != null)
-                        UnityEngine.Debug.LogException(t.Exception);
+                        Debug.LogException(t.Exception);
                 });
             });
 
-            EventBus<ShowMazePathEvent>.Register(_showMazePathBinder);
+            EventBus<ShowMazePathEvent>.Register(_showMazePathListener);
         }
         
     }

@@ -18,7 +18,7 @@ namespace MazeGeneration
         private List<MazeNode> _nodes;
         private GameObject _parentMaze;
         private const string PARENT_NAME = "ParentMaze";
-        private EventBinder<MapGeneratedEvent> _mapGeneratedBinder;
+        private EventListener<MapGeneratedEvent> _mapGeneratedListener;
         IPathFinder _pathFinder;
         IEntitySpawner _spawner;
         
@@ -31,8 +31,8 @@ namespace MazeGeneration
             
             _parentMaze = new GameObject();
             _parentMaze.name = PARENT_NAME;
-            _mapGeneratedBinder = new EventBinder<MapGeneratedEvent>(Generate);
-            EventBus<MapGeneratedEvent>.Register(_mapGeneratedBinder);
+            _mapGeneratedListener = new EventListener<MapGeneratedEvent>(Generate);
+            EventBus<MapGeneratedEvent>.Register(_mapGeneratedListener);
         }
 
         void Generate()

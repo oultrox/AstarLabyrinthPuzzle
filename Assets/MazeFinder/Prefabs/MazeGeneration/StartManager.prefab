@@ -44,10 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d41bdcafeea4964380195691765b8ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mazeGenerator: {fileID: 0}
-  pathDrawerPrefab: {fileID: 2702335981650459624, guid: eb7fa76668f28a8439843d749ddb72bf, type: 3}
+  pathDrawerConfig: {fileID: 11400000, guid: af14b922c1b7c0b44abe712afc180be7, type: 2}
   playerPrefab: {fileID: 1671632334522779131, guid: e5a4efb3969b53e4e8c8c222cfcad9d3, type: 3}
   treasurePrefab: {fileID: 5535137214519700201, guid: 16c56e91622108e42a64a065d5b7490d, type: 3}
+  _mazeNodePrefab: {fileID: 8775671690344581252, guid: 4f0ab20dd28011d4480f435fca4fdd48, type: 3}
   _wallMask:
     serializedVersion: 2
     m_Bits: 64

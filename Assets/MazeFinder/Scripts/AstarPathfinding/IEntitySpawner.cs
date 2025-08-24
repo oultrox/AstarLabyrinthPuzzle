@@ -8,7 +8,10 @@ namespace AstarPathfinding
         Vector3 PlayerPosition { get; }
         Vector3 TreasurePosition { get; }
 
-        // Spawn or move the player to a position
+        /// <summary>
+        /// Either Spawn or move the player.
+        /// </summary>
+        /// <param name="mazeGenerator"></param>
         void SpawnEntities(IMazeGenerator mazeGenerator);
     }
 }

@@ -31,7 +31,7 @@ namespace Manager
         [SerializeField] private Button generateButton;
         [SerializeField] private Button showPathButton;
         
-        private const float NODE_RADIUS = 0.1f;
+        private const float NODE_RADIUS = 0.12f;
         private IPathFinder _pathFinder;
         private IEntitySpawner _entitySpawner;
         private IMazeGenerator _mazeGenerator;
