@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Player
 {
     /// <summary>
-    /// Entity spawners, just spawns the player and the treasure based on given positions.
+    /// Just spawns the player and the treasure based on given positions.
     /// </summary>
     public class EntitySpawner : MonoBehaviour, IEntitySpawner
     {

@@ -1,0 +1,16 @@
+{
+    "name": "SimpleBus.Internal",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0c7703530962d1d47a40ce7f8bb73157"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

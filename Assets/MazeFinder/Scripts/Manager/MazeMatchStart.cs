@@ -1,11 +1,8 @@
 using System.Threading.Tasks;
 using AstarPathfinding;
-using Gamaga.Scripts.AstarPathfinding;
-using Gamaga.Scripts.MazeGeneration;
 using MazeGeneration;
 using Player;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Grid = Gamaga.Scripts.AstarPathfinding.Grid;
 
@@ -14,17 +11,18 @@ namespace Manager
     /// <summary>
     /// Highest layer of the maze test, orchestrator.
     /// </summary>
-    public class MazeMatchManager : MonoBehaviour
+    public class MazeMatchStart : MonoBehaviour
     {
         [Header("References")]
         [SerializeField] private MazeGenerator mazeGenerator;
         [SerializeField] private EntitySpawner entitySpawner;
         [SerializeField] private GameObject pathFinderObj;
         [SerializeField] private GameObject pathDrawerPrefab;
+        
         [Header("GUI")]
         [SerializeField] private Button generateButton;
         [SerializeField] private Button showPathButton;
-        [Header("Maze Match Settings")]
+        //[Header("Maze Match Settings")]
  
         private IPathGenerator _pathGenerator;
         private IEntitySpawner _spawner;

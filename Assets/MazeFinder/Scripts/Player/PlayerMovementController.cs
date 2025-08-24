@@ -1,3 +1,5 @@
+using MazeFinder.Scripts.Events;
+using SimpleBus;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,38 +13,33 @@ namespace Gamaga.Scripts.Player
         private CharacterController _characterController;
         private PlayerInput _playerInput;
         private InputAction _moveAction;
+        private InputAction _keyPressAction;
         private Vector3 _moveDirection;
         private Vector3 _movement;
         private bool _isTiltActivated = false;
         private float _tiltSpeed = 7;
         private Vector2 _currentInput;
         private Vector2 _smoothInputVelocity;
-
+        
 
         private void Start()
         {
             _characterController = GetComponent<CharacterController>();
             _playerInput = GetComponent<PlayerInput>();
             _moveAction = _playerInput.actions["Movement"];
-
-            #if UNITY_ANDROID
+            _keyPressAction = _playerInput.actions["KeyPress"];
+            #if UNITY_ANDROID || UNITY_IOS
             ToggleTiltMovement();
             #endif
-
         }
-
+        
         private void Update()
         {
             MoveCharacter();
 
-            //Just for fun.
-            if (_isTiltActivated && _moveAction.ReadValue<Vector2>() == Vector2.zero)
-            {
-                TiltMovement();
-            }
-
+            AttemptApplyTiltMovement();
         }
-
+        
         public void ToggleTiltMovement()
         {
             if (SystemInfo.supportsGyroscope)
@@ -51,6 +48,16 @@ namespace Gamaga.Scripts.Player
                 Input.gyro.enabled = _isTiltActivated;
             }
         }
+        
+        private void AttemptApplyTiltMovement()
+        {
+            //Just for fun.
+            if (_isTiltActivated && _moveAction.ReadValue<Vector2>() == Vector2.zero)
+            {
+                TiltMovement();
+            }
+        }
+
 
         private void TiltMovement()
         {
