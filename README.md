@@ -1,6 +1,7 @@
 # Maze Labyrinth Game with A* Pathfinding with Gyroscope!
 
-<img width="731" height="453" alt="image" src="https://github.com/user-attachments/assets/d7448f48-20af-4e2e-9d40-8f8bbe4e64a3" />
+<img width="721" height="431" alt="image" src="https://github.com/user-attachments/assets/3b3d2ebd-9f43-435e-9e73-b8eb4b2feff4" />
+
 
 ## Overview
 
