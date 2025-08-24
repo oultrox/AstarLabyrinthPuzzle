@@ -5,16 +5,16 @@ namespace SimpleBus
 {
     public static class EventBus<T> where T : IEvent
     {
-        static readonly HashSet<IEventBinding<T>> bindings = new();
+        static readonly HashSet<IEventBinder<T>> bindings = new();
 
-        public static void Register(IEventBinding<T> binding)
+        public static void Register(IEventBinder<T> binder)
         {
-            bindings.Add(binding);
+            bindings.Add(binder);
         }
 
-        public static void Deregister(IEventBinding<T> binding)
+        public static void Deregister(IEventBinder<T> binder)
         {
-            bindings.Remove(binding);
+            bindings.Remove(binder);
         }
 
         public static void Raise(T @event)

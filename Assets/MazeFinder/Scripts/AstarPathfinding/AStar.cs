@@ -1,20 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 namespace Gamaga.Scripts.AstarPathfinding
 {
     public class AStar
     {
-        public List<Node> FindPathSolution(Vector3 startPos, Vector3 targetPos, Grid grid)
+        public List<Node> FindPathSolution(Vector3 startPos, Vector3 targetPos, GridPathBuilder gridBuilder)
         {
-            if (!grid.IsCreated)
+            if (!gridBuilder.IsCreated)
             {
                 Debug.LogWarning("Grid is not created");
                 return null;
             }
             
-            Node startNode = grid.NodeFromWorldPoint(startPos);
-            Node targetNode = grid.NodeFromWorldPoint(targetPos);
+            Node startNode = gridBuilder.NodeFromWorldPoint(startPos);
+            Node targetNode = gridBuilder.NodeFromWorldPoint(targetPos);
 
             List<Node> openList = new List<Node>();
             HashSet<Node> closedList = new HashSet<Node>();
@@ -41,7 +40,7 @@ namespace Gamaga.Scripts.AstarPathfinding
                 }
 
                 //Loop through each neighbor of the current node
-                foreach (Node NeighborNode in grid.GetNeighborNode(CurrentNode))
+                foreach (Node NeighborNode in gridBuilder.GetNeighborNode(CurrentNode))
                 {
                     if (!NeighborNode.IsWall || closedList.Contains(NeighborNode))
                     {

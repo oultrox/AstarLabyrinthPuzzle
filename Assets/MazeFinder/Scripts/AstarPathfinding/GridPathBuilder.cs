@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Gamaga.Scripts.AstarPathfinding
 {
-    public class Grid : MonoBehaviour
+    public class GridPathBuilder 
     {
-        [SerializeField] private LayerMask _wallMask;
-        [SerializeField] private Vector2 _gridWorldSize;
-        [SerializeField] private float _nodeRadius = 0.15f;
-
+        private LayerMask _wallMask;
+        private Vector2 _gridWorldSize;
+        private float _nodeRadius = 0.15f;
+        private Transform _transform;
         private readonly float _distanceBetweenNodes = 0.2f;
         private Node[,] _nodeArray;
         private float _nodeDiameter;
@@ -19,8 +19,13 @@ namespace Gamaga.Scripts.AstarPathfinding
         public bool IsCreated { get; private set;}
             
         
-        private void Start()
+        public GridPathBuilder(LayerMask wallMask, Vector2 gridWorldSize, float nodeRadius, Transform transform)
         {
+            _wallMask = wallMask;
+            _gridWorldSize = gridWorldSize;
+            _nodeRadius = nodeRadius;
+            _transform = transform;
+            
             //Double the radius to get diameter
             _nodeDiameter = _nodeRadius * 2;
 
@@ -33,21 +38,16 @@ namespace Gamaga.Scripts.AstarPathfinding
         public void CreateGrid()
         {
             _nodeArray = new Node[_gridSizeX, _gridSizeY];
-            Vector3 bottomLeft = transform.position - Vector3.right * _gridWorldSize.x / 2 - Vector3.forward * _gridWorldSize.y / 2;
+            Vector3 bottomLeft = _transform.position - Vector3.right * _gridWorldSize.x / 2 - Vector3.forward * _gridWorldSize.y / 2;
             for (int x = 0; x < _gridSizeX; x++)
             {
                 for (int y = 0; y < _gridSizeY; y++)
                 {
                     //Get the world coordinates of the bottom left of the graph
                     Vector3 worldPoint = bottomLeft + Vector3.right * (x * _nodeDiameter + _nodeRadius) + Vector3.forward * (y * _nodeDiameter + _nodeRadius);
-                    bool Wall = true;
+                    bool isWall = !Physics.CheckSphere(worldPoint, _nodeRadius, _wallMask);
 
-                    if (Physics.CheckSphere(worldPoint, _nodeRadius, _wallMask))
-                    {
-                        Wall = false;
-                    }
-
-                    _nodeArray[x, y] = new Node(Wall, worldPoint, x, y);
+                    _nodeArray[x, y] = new Node(isWall, worldPoint, x, y);
                 }
             }
 
@@ -118,33 +118,6 @@ namespace Gamaga.Scripts.AstarPathfinding
 
             return _nodeArray[ix, iy];
         }
-
-
-        #region Gizmos
-        private void OnDrawGizmos()
-        {
-            // We draw the Grid just for debug in here.
-            Gizmos.DrawWireCube(transform.position, new Vector3(_gridWorldSize.x, 1, _gridWorldSize.y));
-
-            if (_nodeArray != null)
-            {
-                foreach (Node n in _nodeArray)
-                {
-                    if (n.IsWall)
-                    {
-                        Gizmos.color = Color.white;
-                    }
-                    else
-                    {
-                        Gizmos.color = Color.yellow;
-                    }
-                    //Draw the node at the position of the node.
-                    Gizmos.DrawCube(n.Position, Vector3.one * (_nodeDiameter - _distanceBetweenNodes));
-                }
-            }
-        }
-        #endregion Gizmos
-
     }
 
 }

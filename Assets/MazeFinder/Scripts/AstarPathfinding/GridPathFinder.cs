@@ -4,24 +4,23 @@ using Gamaga.Scripts.AstarPathfinding;
 using MazeFinder.Scripts.Events;
 using SimpleBus;
 using UnityEngine;
-using Grid = Gamaga.Scripts.AstarPathfinding.Grid;
 
 namespace AstarPathfinding
 {
-    public class GridPathFinder : IPathGenerator
+    public class GridPathFinder : IPathFinder
     {
         private AStar _aStar = new();
         private PathDrawer _pathDrawer;
-        private Grid _grid;
+        private GridPathBuilder _gridBuilder;
         private IEntitySpawner _spawner;
-        private EventBinding<ShowMazePathEvent> _showMazePathBinding;
+        private EventBinder<ShowMazePathEvent> _showMazePathBinder;
         
         public bool IsGeneratingPath { get; private set; }
         
         
-        public GridPathFinder(Grid grid, PathDrawer pathDrawer, IEntitySpawner spawner)
+        public GridPathFinder(GridPathBuilder gridBuilder, PathDrawer pathDrawer, IEntitySpawner spawner)
         {
-            _grid = grid;
+            _gridBuilder = gridBuilder;
             _pathDrawer = pathDrawer;
             _spawner = spawner;
             RegisterEvents();
@@ -34,7 +33,7 @@ namespace AstarPathfinding
             
             // Simulate async grid creation without blocking
             await Task.Yield();
-            _grid.CreateGrid();
+            _gridBuilder.CreateGrid();
 
             IsGeneratingPath = false;
         }
@@ -44,8 +43,8 @@ namespace AstarPathfinding
             Vector3 start = _spawner.PlayerPosition;
             Vector3 end = _spawner.TreasurePosition;
 
-            var finalPath = _aStar.FindPathSolution(start, end, _grid);
-            _pathDrawer.DrawPath(_grid.NodeArray, finalPath);
+            var finalPath = _aStar.FindPathSolution(start, end, _gridBuilder);
+            _pathDrawer.DrawPath(_gridBuilder.NodeArray, finalPath);
 
             await Task.Yield(); // simulate async
             return finalPath;
@@ -53,7 +52,7 @@ namespace AstarPathfinding
         
         void RegisterEvents()
         {
-            _showMazePathBinding = new EventBinding<ShowMazePathEvent>(() =>
+            _showMazePathBinder = new EventBinder<ShowMazePathEvent>(() =>
             {
                 _ = FindSolutionAsync().ContinueWith(t =>
                 {
@@ -62,7 +61,7 @@ namespace AstarPathfinding
                 });
             });
 
-            EventBus<ShowMazePathEvent>.Register(_showMazePathBinding);
+            EventBus<ShowMazePathEvent>.Register(_showMazePathBinder);
         }
         
     }

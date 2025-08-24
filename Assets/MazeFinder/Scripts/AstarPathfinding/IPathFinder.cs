@@ -4,7 +4,7 @@ using Gamaga.Scripts.AstarPathfinding;
 
 namespace AstarPathfinding
 {
-    public interface IPathGenerator
+    public interface IPathFinder
     {
         bool IsGeneratingPath { get; }
         Task InitializeGridAsync();

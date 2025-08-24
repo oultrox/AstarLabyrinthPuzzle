@@ -20,40 +20,39 @@ namespace MazeGeneration
         private List<MazeNode> _nodes;
         private GameObject _parentMaze;
         private const string PARENT_NAME = "ParentMaze";
-        private EventBinding<MapGeneratedEvent> _mapGeneratedBinding;
-        IPathGenerator _pathGenerator;
+        private EventBinder<MapGeneratedEvent> _mapGeneratedBinder;
+        IPathFinder _pathFinder;
         IEntitySpawner _spawner;
         
-        private void Awake()
+        void Awake()
         {
             _parentMaze = new GameObject();
-            _parentMaze.transform.SetParent(this.transform);
+            _parentMaze.transform.SetParent(transform);
             _parentMaze.name = PARENT_NAME;
         }
 
-        private void OnEnable()
+        void OnEnable()
         {
-            
-            _mapGeneratedBinding = new EventBinding<MapGeneratedEvent>(Generate);
-            EventBus<MapGeneratedEvent>.Register(_mapGeneratedBinding);
+            _mapGeneratedBinder = new EventBinder<MapGeneratedEvent>(Generate);
+            EventBus<MapGeneratedEvent>.Register(_mapGeneratedBinder);
         }
 
-        private void OnDisable()
+        void OnDisable()
         {
-            EventBus<MapGeneratedEvent>.Deregister(_mapGeneratedBinding);
+            EventBus<MapGeneratedEvent>.Deregister(_mapGeneratedBinder);
         }
 
-        public void Initialize(IPathGenerator pathGenerator, IEntitySpawner spawner)
+        public void Initialize(IPathFinder pathFinder, IEntitySpawner spawner)
         {
-            _pathGenerator = pathGenerator;
+            _pathFinder = pathFinder;
             _spawner = spawner;
         }
 
         void Generate()
         {
-            if (_pathGenerator.IsGeneratingPath) return;
+            if (_pathFinder.IsGeneratingPath) return;
             InitializeMaze();
-            _pathGenerator.InitializeGridAsync();
+            _pathFinder.InitializeGridAsync();
             _spawner.SpawnEntities(this);
         }
         

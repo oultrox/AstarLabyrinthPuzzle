@@ -1,12 +1,11 @@
 using AstarPathfinding;
-using Gamaga.Scripts.MazeGeneration;
+using Gamaga.Scripts.AstarPathfinding;
 using MazeFinder.Scripts.Events;
 using MazeGeneration;
 using Player;
 using SimpleBus;
 using UnityEngine;
 using UnityEngine.UI;
-using Grid = Gamaga.Scripts.AstarPathfinding.Grid;
 
 namespace Manager
 {
@@ -22,13 +21,23 @@ namespace Manager
         [SerializeField] private GameObject pathDrawerPrefab;
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private GameObject treasurePrefab;
-        [SerializeField] private MazeNode _nodePrefab;
+       
+        
+        [Header("Map References")]
+        [SerializeField] private GameObject _nodePrefab;
+        [SerializeField] private Vector2Int _mazeSize;
+        [SerializeField] private float _nodeSize;
+        
+        [Header("Grid Data")]
+        [SerializeField] private LayerMask _wallMask;
+        [SerializeField] private Vector2 _gridWorldSize;
+        [SerializeField] private float _nodeRadius = 0.15f;
         
         [Header("GUI")]
         [SerializeField] private Button generateButton;
         [SerializeField] private Button showPathButton;
         
-        private IPathGenerator _pathGenerator;
+        private IPathFinder _pathFinder;
         private readonly MapGeneratedEvent _mapGenerated = new();
         private readonly ShowMazePathEvent _showMazePath = new();
         
@@ -39,26 +48,27 @@ namespace Manager
             InjectListeners();
         }
 
-        private void SetBehavioralComponents()
+        void SetBehavioralComponents()
         {
-            var grid = pathFinderObj.GetComponent<Grid>(); 
+            var grid = new GridPathBuilder(_wallMask, _gridWorldSize, _nodeRadius, transform);
             var pathDrawer = Instantiate(pathDrawerPrefab).GetComponent<PathDrawer>();
-            _pathGenerator = new GridPathFinder(grid, pathDrawer, entitySpawner);
-            mazeGenerator.Initialize(_pathGenerator, entitySpawner);
+            
+            _pathFinder = new GridPathFinder(grid, pathDrawer, entitySpawner);
+            mazeGenerator.Initialize(_pathFinder, entitySpawner);
         }
 
-        private void InjectListeners()
+        void InjectListeners()
         {
             generateButton.onClick.AddListener(GenerateMap);
             showPathButton.onClick.AddListener(ShowPath);
         }
 
-        private  void GenerateMap()
+         void GenerateMap()
         {
             EventBus<MapGeneratedEvent>.Raise(_mapGenerated);
         }
 
-        private void ShowPath()
+        void ShowPath()
         {
             EventBus<ShowMazePathEvent>.Raise(_showMazePath);
         }

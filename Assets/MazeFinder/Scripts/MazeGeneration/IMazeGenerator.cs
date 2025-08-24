@@ -7,7 +7,7 @@ namespace MazeGeneration
 {
     public interface IMazeGenerator
     {
-        void Initialize(IPathGenerator pathGenerator, IEntitySpawner entitySpawner);
+        void Initialize(IPathFinder pathFinder, IEntitySpawner entitySpawner);
         Vector3 GetStartPosition();
         Vector3 GetEndGoalPosition();
     }
