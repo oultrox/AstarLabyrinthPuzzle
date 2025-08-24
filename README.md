@@ -20,6 +20,23 @@ This project is a **maze labyrinth game** implemented in Unity. Players can gene
 - **Path Visualization**: Draws the path using a step-based trail for easy readability, independent of the maze node precision.
 - **Event Bus System**: Clean decoupled architecture using a custom event bus framework (`SimpleBus`) to manage game events.
 - **Manual Dependency Injection**: All components are injected from a single entry point (`MazeMatchStart`), keeping the system modular and testable.
+- The project leverages **interface segregation** to decouple different responsibilities, making it easy to swap implementations for different parts of the system:
+
+### `IPathFinder` – Handles pathfinding logic
+- `InitializeGridAsync()` sets up the pathfinding grid.
+- `FindSolutionAsync()` finds the path from start to goal.
+- `IsGeneratingPath` indicates if a path is currently being computed.
+
+### `IMazeGenerator` – Handles maze generation
+- Provides start and goal positions via:
+  - `GetStartPosition()`
+  - `GetEndGoalPosition()`
+
+### `IEntitySpawner` – Handles spawning or moving entities in the maze
+- Exposes:
+  - `PlayerPosition`
+  - `TreasurePosition`
+- `SpawnEntities(IMazeGenerator mazeGenerator)` places the player and treasure in the maze.
 
 ---
 
@@ -104,6 +121,65 @@ This project is a **maze labyrinth game** implemented in Unity. Players can gene
 - Supports configurable **visual scale** and **node skipping** to render a clear step-trail.
 - Uses `ObjectPool<GameObject>` for performance, avoiding frequent instantiation/destruction.
 
+```csharp
+public class GridPathFinder : IPathFinder
+{
+  private AStar _aStar = new();
+  private PathDrawer _pathDrawer;
+  private GridPathBuilder _gridBuilder;
+  private IEntitySpawner _spawner;
+  private EventListener<ShowMazePathEvent> _showMazePathListener;
+  
+  public bool IsGeneratingPath { get; private set; }
+  
+  
+  public GridPathFinder(GridPathBuilder gridBuilder, PathDrawer pathDrawer, IEntitySpawner spawner)
+  {
+      _gridBuilder = gridBuilder;
+      _pathDrawer = pathDrawer;
+      _spawner = spawner;
+      RegisterEvents();
+  }
+  
+  public async Task InitializeGridAsync()
+  {
+      IsGeneratingPath = true;
+      _pathDrawer.ClearPath();
+      
+      // Simulate async grid creation without blocking
+      await Task.Yield();
+      _gridBuilder.CreateGrid();
+
+      IsGeneratingPath = false;
+  }
+
+  public async Task<List<Node>> FindSolutionAsync()
+  {
+      Vector3 start = _spawner.PlayerPosition;
+      Vector3 end = _spawner.TreasurePosition;
+
+      var finalPath = _aStar.FindPathSolution(start, end, _gridBuilder);
+      _pathDrawer.DrawPath(finalPath);
+
+      await Task.Yield(); // simulate async
+      return finalPath;
+  }
+  
+  void RegisterEvents()
+  {
+      _showMazePathListener = new EventListener<ShowMazePathEvent>(() =>
+      {
+          _ = FindSolutionAsync().ContinueWith(t =>
+          {
+              if (t.Exception != null)
+                  Debug.LogException(t.Exception);
+          });
+      });
+
+      EventBus<ShowMazePathEvent>.Register(_showMazePathListener);
+  }
+}
+```
 ---
 
 ### Event System
