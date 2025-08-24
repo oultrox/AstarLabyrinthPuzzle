@@ -6,13 +6,14 @@ namespace Gamaga.Scripts.AstarPathfinding
 {
     public class GridPathBuilder 
     {
-        private LayerMask _wallMask;
-        private Vector2 _gridWorldSize;
-        private float _nodeRadius = 0.15f;
-        private Transform _transform;
+        private readonly LayerMask _wallMask;
+        private readonly Vector2 _gridWorldSize;
+        private readonly float _nodeRadius;
+        private readonly Transform _transform;
         private Node[,] _nodeArray;
-        private float _nodeDiameter;
-        private int _gridSizeX, _gridSizeY;
+        private readonly float _nodeDiameter;
+        private readonly int _gridSizeX;
+        private readonly int _gridSizeY;
 
         public Node[,] NodeArray { get => _nodeArray; set => _nodeArray = value; }
         public bool IsCreated { get; private set;}

@@ -1,5 +1,6 @@
 using AstarPathfinding;
 using Gamaga.Scripts.AstarPathfinding;
+using Gamaga.Scripts.MazeGeneration;
 using MazeFinder.Scripts.Events;
 using MazeGeneration;
 using Player;
@@ -15,12 +16,12 @@ namespace Manager
     public class MazeMatchStart : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private MazeGenerator mazeGenerator;
         [SerializeField] private GameObject pathDrawerPrefab;
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private GameObject treasurePrefab;
         
         [Header("Grid Data")]
+        [SerializeField] private MazeNode mazeNode;
         [SerializeField] private LayerMask _wallMask;
         [SerializeField] private Vector2Int _gridWorldSize;
         
@@ -31,6 +32,7 @@ namespace Manager
         private const float NODE_RADIUS = 0.15f;
         private IPathFinder _pathFinder;
         private IEntitySpawner _entitySpawner;
+        private IMazeGenerator _mazeGenerator;
         private readonly MapGeneratedEvent _mapGenerated = new();
         private readonly ShowMazePathEvent _showMazePath = new();
         
@@ -48,7 +50,7 @@ namespace Manager
             
             _entitySpawner = new EntitySpawner(playerPrefab, treasurePrefab);
             _pathFinder = new GridPathFinder(grid, pathDrawer, _entitySpawner);
-            mazeGenerator.Initialize(_pathFinder, _entitySpawner, _gridWorldSize);
+            _mazeGenerator = new MazeGenerator(_pathFinder, _entitySpawner, _gridWorldSize, mazeNode);
         }
 
         void InjectListeners()

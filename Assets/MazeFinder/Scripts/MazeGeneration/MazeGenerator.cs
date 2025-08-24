@@ -4,7 +4,6 @@ using Gamaga.Scripts.MazeGeneration;
 using MazeFinder.Scripts.Events;
 using SimpleBus;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace MazeGeneration
@@ -12,9 +11,9 @@ namespace MazeGeneration
     /// <summary>
     /// In charge of generating the maze with a node-based system.
     /// </summary>
-    public class MazeGenerator : MonoBehaviour, IMazeGenerator
+    public class MazeGenerator : IMazeGenerator
     {
-        [SerializeField] private MazeNode _nodePrefab;
+        private MazeNode _nodePrefab;
         private Vector2Int _mazeSize;
         private List<MazeNode> _nodes;
         private GameObject _parentMaze;
@@ -23,30 +22,17 @@ namespace MazeGeneration
         IPathFinder _pathFinder;
         IEntitySpawner _spawner;
         
-        
-        void Awake()
-        {
-            _parentMaze = new GameObject();
-            _parentMaze.transform.SetParent(transform);
-            _parentMaze.name = PARENT_NAME;
-        }
-
-        void OnEnable()
-        {
-            _mapGeneratedBinder = new EventBinder<MapGeneratedEvent>(Generate);
-            EventBus<MapGeneratedEvent>.Register(_mapGeneratedBinder);
-        }
-
-        void OnDisable()
-        {
-            EventBus<MapGeneratedEvent>.Deregister(_mapGeneratedBinder);
-        }
-        
-        public void Initialize(IPathFinder pathFinder, IEntitySpawner entitySpawner, Vector2Int gridWorldSize)
+        public MazeGenerator(IPathFinder pathFinder, IEntitySpawner entitySpawner, Vector2Int gridWorldSize, MazeNode nodePrefab)
         {
             _pathFinder = pathFinder;
             _spawner = entitySpawner;
             _mazeSize = gridWorldSize;
+            _nodePrefab = nodePrefab;
+            
+            _parentMaze = new GameObject();
+            _parentMaze.name = PARENT_NAME;
+            _mapGeneratedBinder = new EventBinder<MapGeneratedEvent>(Generate);
+            EventBus<MapGeneratedEvent>.Register(_mapGeneratedBinder);
         }
 
         void Generate()
@@ -83,7 +69,7 @@ namespace MazeGeneration
             _nodes.Clear();
             for (var i = _parentMaze.transform.childCount - 1; i >= 0; i--)
             {
-                Destroy(_parentMaze.transform.GetChild(i).gameObject);
+                Object.Destroy(_parentMaze.transform.GetChild(i).gameObject);
             }
         }
         
@@ -97,7 +83,7 @@ namespace MazeGeneration
                 for (int y = 0; y < size.y; y++)
                 {
                     Vector3 nodePos = new Vector3(x - (size.x / 2f), 0, y - (size.y / 2f));
-                    MazeNode newNode = Instantiate(_nodePrefab, nodePos, Quaternion.identity, _parentMaze.transform);
+                    MazeNode newNode = Object.Instantiate(_nodePrefab, nodePos, Quaternion.identity, _parentMaze.transform);
                     _nodes.Add(newNode);
                 }
             }
