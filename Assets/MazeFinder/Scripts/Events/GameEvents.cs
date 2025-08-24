@@ -2,13 +2,11 @@ using SimpleBus;
 
 namespace MazeFinder.Scripts.Events
 {
-    public struct TestEvent : IEvent
+    public struct MapGeneratedEvent : IEvent
     {
-    
     }
-
-    public struct PlayerEvent : IEvent
+    
+    public struct ShowMazePathEvent : IEvent
     {
-        public bool isActive;
     }
 }

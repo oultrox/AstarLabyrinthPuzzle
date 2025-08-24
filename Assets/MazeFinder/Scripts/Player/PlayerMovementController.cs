@@ -13,7 +13,6 @@ namespace Gamaga.Scripts.Player
         private CharacterController _characterController;
         private PlayerInput _playerInput;
         private InputAction _moveAction;
-        private InputAction _keyPressAction;
         private Vector3 _moveDirection;
         private Vector3 _movement;
         private bool _isTiltActivated = false;
@@ -27,7 +26,6 @@ namespace Gamaga.Scripts.Player
             _characterController = GetComponent<CharacterController>();
             _playerInput = GetComponent<PlayerInput>();
             _moveAction = _playerInput.actions["Movement"];
-            _keyPressAction = _playerInput.actions["KeyPress"];
             #if UNITY_ANDROID || UNITY_IOS
             ToggleTiltMovement();
             #endif
@@ -70,7 +68,6 @@ namespace Gamaga.Scripts.Player
         private void MoveCharacter()
         {
             _moveDirection = _moveAction.ReadValue<Vector2>();
-
             _currentInput = Vector2.SmoothDamp(_currentInput, _moveDirection, ref _smoothInputVelocity, _smoothInputSpeed);
 
             _movement = new Vector3(_currentInput.x, 0, _currentInput.y);

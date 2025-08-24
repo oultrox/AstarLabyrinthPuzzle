@@ -1,7 +1,9 @@
-using System.Threading.Tasks;
 using AstarPathfinding;
+using Gamaga.Scripts.MazeGeneration;
+using MazeFinder.Scripts.Events;
 using MazeGeneration;
 using Player;
+using SimpleBus;
 using UnityEngine;
 using UnityEngine.UI;
 using Grid = Gamaga.Scripts.AstarPathfinding.Grid;
@@ -9,7 +11,7 @@ using Grid = Gamaga.Scripts.AstarPathfinding.Grid;
 namespace Manager
 {
     /// <summary>
-    /// Highest layer of the maze test, orchestrator.
+    /// Highest layer of the maze test, Manual injector.
     /// </summary>
     public class MazeMatchStart : MonoBehaviour
     {
@@ -18,15 +20,17 @@ namespace Manager
         [SerializeField] private EntitySpawner entitySpawner;
         [SerializeField] private GameObject pathFinderObj;
         [SerializeField] private GameObject pathDrawerPrefab;
+        [SerializeField] private GameObject playerPrefab;
+        [SerializeField] private GameObject treasurePrefab;
+        [SerializeField] private MazeNode _nodePrefab;
         
         [Header("GUI")]
         [SerializeField] private Button generateButton;
         [SerializeField] private Button showPathButton;
-        //[Header("Maze Match Settings")]
- 
+        
         private IPathGenerator _pathGenerator;
-        private IEntitySpawner _spawner;
-        private IMazeGenerator _mazeGenerator;
+        private readonly MapGeneratedEvent _mapGenerated = new();
+        private readonly ShowMazePathEvent _showMazePath = new();
         
         
         void Start()
@@ -39,29 +43,24 @@ namespace Manager
         {
             var grid = pathFinderObj.GetComponent<Grid>(); 
             var pathDrawer = Instantiate(pathDrawerPrefab).GetComponent<PathDrawer>();
-            _mazeGenerator = mazeGenerator;
-            _pathGenerator = new GridPathFinder(grid, pathDrawer);
-            _spawner = entitySpawner;
+            _pathGenerator = new GridPathFinder(grid, pathDrawer, entitySpawner);
+            mazeGenerator.Initialize(_pathGenerator, entitySpawner);
         }
 
         private void InjectListeners()
         {
-            generateButton.onClick.AddListener(async () => await InitMazeWithEntitiesAsync());
-            showPathButton.onClick.AddListener(async () => await InitFindPathAsync());
+            generateButton.onClick.AddListener(GenerateMap);
+            showPathButton.onClick.AddListener(ShowPath);
         }
 
-        private async Task InitMazeWithEntitiesAsync()
+        private  void GenerateMap()
         {
-            if (_pathGenerator.IsGeneratingPath) return;
-
-            mazeGenerator.InitializeMaze();
-            await _pathGenerator.InitializeGridAsync();
-            _spawner.SpawnEntities(_mazeGenerator);
+            EventBus<MapGeneratedEvent>.Raise(_mapGenerated);
         }
 
-        private async Task InitFindPathAsync()
+        private void ShowPath()
         {
-            await _pathGenerator.FindSolutionAsync(_spawner);
+            EventBus<ShowMazePathEvent>.Raise(_showMazePath);
         }
     }
 }

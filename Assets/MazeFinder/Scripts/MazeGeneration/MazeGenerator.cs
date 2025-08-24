@@ -1,6 +1,11 @@
+using System;
 using System.Collections.Generic;
+using AstarPathfinding;
 using Gamaga.Scripts.MazeGeneration;
+using MazeFinder.Scripts.Events;
+using SimpleBus;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace MazeGeneration
 {
@@ -15,15 +20,54 @@ namespace MazeGeneration
         private List<MazeNode> _nodes;
         private GameObject _parentMaze;
         private const string PARENT_NAME = "ParentMaze";
-
+        private EventBinding<MapGeneratedEvent> _mapGeneratedBinding;
+        IPathGenerator _pathGenerator;
+        IEntitySpawner _spawner;
+        
         private void Awake()
         {
             _parentMaze = new GameObject();
             _parentMaze.transform.SetParent(this.transform);
             _parentMaze.name = PARENT_NAME;
         }
+
+        private void OnEnable()
+        {
+            
+            _mapGeneratedBinding = new EventBinding<MapGeneratedEvent>(Generate);
+            EventBus<MapGeneratedEvent>.Register(_mapGeneratedBinding);
+        }
+
+        private void OnDisable()
+        {
+            EventBus<MapGeneratedEvent>.Deregister(_mapGeneratedBinding);
+        }
+
+        public void Initialize(IPathGenerator pathGenerator, IEntitySpawner spawner)
+        {
+            _pathGenerator = pathGenerator;
+            _spawner = spawner;
+        }
+
+        void Generate()
+        {
+            if (_pathGenerator.IsGeneratingPath) return;
+            InitializeMaze();
+            _pathGenerator.InitializeGridAsync();
+            _spawner.SpawnEntities(this);
+        }
         
-        public void InitializeMaze()
+        public Vector3 GetStartPosition()
+        {
+            return GetFirstNodePosition();
+        }
+
+        public Vector3 GetEndGoalPosition()
+        {
+            return GetLastNodePosition();
+        }
+        
+        void InitializeMaze()
         {
             if (_nodes != null)
             {
@@ -32,7 +76,7 @@ namespace MazeGeneration
             GenerateMaze(_mazeSize);
         }
         
-        private void ClearMaze()
+        void ClearMaze()
         {
             _nodes.Clear();
             for (var i = _parentMaze.transform.childCount - 1; i >= 0; i--)
@@ -41,7 +85,7 @@ namespace MazeGeneration
             }
         }
         
-        private void GenerateMaze(Vector2Int size)
+        void GenerateMaze(Vector2Int size)
         {
             _nodes = new List<MazeNode>();
 
@@ -148,16 +192,6 @@ namespace MazeGeneration
                     currentPath.RemoveAt(currentPath.Count - 1);
                 }
             }
-        }
-
-        public Vector3 GetStartPosition()
-        {
-            return GetFirstNodePosition();
-        }
-
-        public Vector3 GetEndGoalPosition()
-        {
-            return GetLastNodePosition();
         }
         
         Vector3 GetFirstNodePosition()

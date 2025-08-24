@@ -8,6 +8,6 @@ namespace AstarPathfinding
     {
         bool IsGeneratingPath { get; }
         Task InitializeGridAsync();
-        Task<List<Node>> FindSolutionAsync(IEntitySpawner entitySpawner);
+        Task<List<Node>> FindSolutionAsync();
     }
 }
