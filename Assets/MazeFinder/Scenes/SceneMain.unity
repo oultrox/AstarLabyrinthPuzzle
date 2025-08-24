@@ -619,14 +619,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
-      propertyPath: mazeNode
-      value: 
-      objectReference: {fileID: 8775671690344581252, guid: 4f0ab20dd28011d4480f435fca4fdd48, type: 3}
-    - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
-      propertyPath: mazeGenerator
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
       propertyPath: generateButton
       value: 
       objectReference: {fileID: 1960174822}
@@ -634,22 +626,6 @@ PrefabInstance:
       propertyPath: showPathButton
       value: 
       objectReference: {fileID: 73608262}
-    - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
-      propertyPath: _gridWorldSize.x
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
-      propertyPath: _gridWorldSize.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
-      propertyPath: pathDrawerConfig
-      value: 
-      objectReference: {fileID: 11400000, guid: af14b922c1b7c0b44abe712afc180be7, type: 2}
-    - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
-      propertyPath: mazeGeneratorRoot
-      value: 
-      objectReference: {fileID: 996381478}
     - target: {fileID: 371713908959759640, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
       propertyPath: m_RootOrder
       value: 2
