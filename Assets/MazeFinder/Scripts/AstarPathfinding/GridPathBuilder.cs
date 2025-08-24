@@ -10,7 +10,6 @@ namespace Gamaga.Scripts.AstarPathfinding
         private Vector2 _gridWorldSize;
         private float _nodeRadius = 0.15f;
         private Transform _transform;
-        private readonly float _distanceBetweenNodes = 0.2f;
         private Node[,] _nodeArray;
         private float _nodeDiameter;
         private int _gridSizeX, _gridSizeY;

@@ -216,7 +216,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &377487007
 GameObject:
@@ -314,19 +314,8 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &555347462 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2284027805630722910, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-  m_PrefabInstance: {fileID: 7447514155944395839}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e4dca3d006105749a5cefbda1731b65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &900170316
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +345,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &996381477 stripped
 MonoBehaviour:
@@ -461,7 +450,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &1960174822 stripped
 MonoBehaviour:
@@ -613,6 +602,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MazeController
       objectReference: {fileID: 0}
+    - target: {fileID: 7360337442566816746, guid: 726239688167ce8438680b71b8ebb942, type: 3}
+      propertyPath: _mazeSize.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7360337442566816746, guid: 726239688167ce8438680b71b8ebb942, type: 3}
+      propertyPath: _mazeSize.y
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7360337442566816747, guid: 726239688167ce8438680b71b8ebb942, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -659,63 +656,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 726239688167ce8438680b71b8ebb942, type: 3}
---- !u!1001 &7447514155944395839
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 830002167667315226, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-      propertyPath: m_Name
-      value: EntitySpawners
-      objectReference: {fileID: 0}
-    - target: {fileID: 6702768994254830513, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6702768994254830513, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6702768994254830513, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6702768994254830513, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6702768994254830513, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6702768994254830513, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6702768994254830513, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6702768994254830513, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6702768994254830513, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6702768994254830513, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6702768994254830513, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0cab33d9b077641458feaccf88062fb7, type: 3}
 --- !u!1001 &7518325424899762167
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -734,7 +674,7 @@ PrefabInstance:
     - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
       propertyPath: entitySpawner
       value: 
-      objectReference: {fileID: 555347462}
+      objectReference: {fileID: 0}
     - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
       propertyPath: mazeGenerator
       value: 
@@ -746,7 +686,7 @@ PrefabInstance:
     - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
       propertyPath: playerSpawner
       value: 
-      objectReference: {fileID: 555347462}
+      objectReference: {fileID: 0}
     - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
       propertyPath: generateButton
       value: 
@@ -761,11 +701,11 @@ PrefabInstance:
       objectReference: {fileID: 5535137214519700201, guid: 16c56e91622108e42a64a065d5b7490d, type: 3}
     - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
       propertyPath: _gridWorldSize.x
-      value: 30
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
       propertyPath: _gridWorldSize.y
-      value: 30
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
       propertyPath: _wallMask.m_Bits

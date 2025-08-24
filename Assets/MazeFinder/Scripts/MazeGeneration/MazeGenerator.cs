@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using AstarPathfinding;
 using Gamaga.Scripts.MazeGeneration;
 using MazeFinder.Scripts.Events;
 using SimpleBus;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace MazeGeneration
@@ -15,14 +15,15 @@ namespace MazeGeneration
     public class MazeGenerator : MonoBehaviour, IMazeGenerator
     {
         [SerializeField] private MazeNode _nodePrefab;
-        [SerializeField] private Vector2Int _mazeSize;
-        [SerializeField] private float _nodeSize;
+        [FormerlySerializedAs("_nodeSize")] [SerializeField] private float _nodeRadius;
+        private Vector2Int _mazeSize;
         private List<MazeNode> _nodes;
         private GameObject _parentMaze;
         private const string PARENT_NAME = "ParentMaze";
         private EventBinder<MapGeneratedEvent> _mapGeneratedBinder;
         IPathFinder _pathFinder;
         IEntitySpawner _spawner;
+        
         
         void Awake()
         {
@@ -41,11 +42,13 @@ namespace MazeGeneration
         {
             EventBus<MapGeneratedEvent>.Deregister(_mapGeneratedBinder);
         }
-
-        public void Initialize(IPathFinder pathFinder, IEntitySpawner spawner)
+        
+        public void Initialize(IPathFinder pathFinder, IEntitySpawner entitySpawner, Vector2Int gridWorldSize, float nodeRadius)
         {
             _pathFinder = pathFinder;
-            _spawner = spawner;
+            _spawner = entitySpawner;
+            _mazeSize = gridWorldSize;
+            _nodeRadius = nodeRadius;
         }
 
         void Generate()
@@ -55,7 +58,9 @@ namespace MazeGeneration
             _pathFinder.InitializeGridAsync();
             _spawner.SpawnEntities(this);
         }
+
         
+
         public Vector3 GetStartPosition()
         {
             return GetFirstNodePosition();
