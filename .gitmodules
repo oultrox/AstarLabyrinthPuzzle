@@ -1,0 +1,3 @@
+[submodule "Assets/SimpleBus"]
+	path = Assets/SimpleBus
+	url = git@github.com:oultrox/SimpleBus.git
