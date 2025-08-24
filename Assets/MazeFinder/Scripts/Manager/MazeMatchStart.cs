@@ -48,7 +48,7 @@ namespace Manager
             
             _entitySpawner = new EntitySpawner(playerPrefab, treasurePrefab);
             _pathFinder = new GridPathFinder(grid, pathDrawer, _entitySpawner);
-            mazeGenerator.Initialize(_pathFinder, _entitySpawner, _gridWorldSize, NODE_RADIUS);
+            mazeGenerator.Initialize(_pathFinder, _entitySpawner, _gridWorldSize);
         }
 
         void InjectListeners()

@@ -45,5 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nodePrefab: {fileID: 8775671690344581252, guid: 4f0ab20dd28011d4480f435fca4fdd48, type: 3}
-  _mazeSize: {x: 20, y: 10}
-  _nodeSize: 0.15
+  _nodeRadius: 0.15

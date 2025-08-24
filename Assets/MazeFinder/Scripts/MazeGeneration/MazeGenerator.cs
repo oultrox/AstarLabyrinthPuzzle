@@ -15,7 +15,6 @@ namespace MazeGeneration
     public class MazeGenerator : MonoBehaviour, IMazeGenerator
     {
         [SerializeField] private MazeNode _nodePrefab;
-        [FormerlySerializedAs("_nodeSize")] [SerializeField] private float _nodeRadius;
         private Vector2Int _mazeSize;
         private List<MazeNode> _nodes;
         private GameObject _parentMaze;
@@ -43,12 +42,11 @@ namespace MazeGeneration
             EventBus<MapGeneratedEvent>.Deregister(_mapGeneratedBinder);
         }
         
-        public void Initialize(IPathFinder pathFinder, IEntitySpawner entitySpawner, Vector2Int gridWorldSize, float nodeRadius)
+        public void Initialize(IPathFinder pathFinder, IEntitySpawner entitySpawner, Vector2Int gridWorldSize)
         {
             _pathFinder = pathFinder;
             _spawner = entitySpawner;
             _mazeSize = gridWorldSize;
-            _nodeRadius = nodeRadius;
         }
 
         void Generate()
