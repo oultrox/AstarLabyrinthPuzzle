@@ -84,6 +84,7 @@ namespace MazeGeneration
                 {
                     Vector3 nodePos = new Vector3(x - (size.x / 2f), 0, y - (size.y / 2f));
                     MazeNode newNode = Object.Instantiate(_nodePrefab, nodePos, Quaternion.identity, _parentMaze.transform);
+                    newNode.Init();
                     _nodes.Add(newNode);
                 }
             }

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14f40d0c78aa46a79f5c30d1f9ced7d9, type: 3}
+  m_Name: PathDrawerConfig
+  m_EditorClassIdentifier: 
+  _visualScale: 0.025
+  _pathRender: {fileID: 7405483286531819937, guid: 065e604411909a347b25dda7eed51601, type: 3}
+  _skipNodes: 2

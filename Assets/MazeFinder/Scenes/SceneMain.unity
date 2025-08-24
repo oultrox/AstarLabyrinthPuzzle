@@ -635,6 +635,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 73608262}
     - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
+      propertyPath: _gridWorldSize.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
+      propertyPath: _gridWorldSize.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
+      propertyPath: pathDrawerConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: af14b922c1b7c0b44abe712afc180be7, type: 2}
+    - target: {fileID: 156910136820087147, guid: 75c93d251b4ba2d4ea147a763b61cab8, type: 3}
       propertyPath: mazeGeneratorRoot
       value: 
       objectReference: {fileID: 996381478}

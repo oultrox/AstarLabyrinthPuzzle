@@ -16,23 +16,27 @@ namespace Manager
     public class MazeMatchStart : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private GameObject pathDrawerPrefab;
+        [SerializeField] private PathDrawerConfig pathDrawerConfig;
         [SerializeField] private GameObject playerPrefab;
         [SerializeField] private GameObject treasurePrefab;
         
-        [Header("Grid Data")]
-        [SerializeField] private MazeNode mazeNode;
+        [Header("Maze Data")]
+        [SerializeField] private MazeNode _mazeNodePrefab;
         [SerializeField] private LayerMask _wallMask;
+        
+        [Header("Grid Data")]
         [SerializeField] private Vector2Int _gridWorldSize;
         
         [Header("GUI")]
         [SerializeField] private Button generateButton;
         [SerializeField] private Button showPathButton;
         
-        private const float NODE_RADIUS = 0.15f;
+        private const float NODE_RADIUS = 0.1f;
         private IPathFinder _pathFinder;
         private IEntitySpawner _entitySpawner;
         private IMazeGenerator _mazeGenerator;
+        
+        private PathDrawer _pathDrawer;
         private readonly MapGeneratedEvent _mapGenerated = new();
         private readonly ShowMazePathEvent _showMazePath = new();
         
@@ -46,11 +50,10 @@ namespace Manager
         void SetBehavioralComponents()
         {
             var grid = new GridPathBuilder(_wallMask, _gridWorldSize, NODE_RADIUS, transform);
-            var pathDrawer = Instantiate(pathDrawerPrefab).GetComponent<PathDrawer>();
-            
+            _pathDrawer = new PathDrawer(pathDrawerConfig);
             _entitySpawner = new EntitySpawner(playerPrefab, treasurePrefab);
-            _pathFinder = new GridPathFinder(grid, pathDrawer, _entitySpawner);
-            _mazeGenerator = new MazeGenerator(_pathFinder, _entitySpawner, _gridWorldSize, mazeNode);
+            _pathFinder = new GridPathFinder(grid, _pathDrawer, _entitySpawner);
+            _mazeGenerator = new MazeGenerator(_pathFinder, _entitySpawner, _gridWorldSize, _mazeNodePrefab);
         }
 
         void InjectListeners()

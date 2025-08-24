@@ -44,7 +44,7 @@ namespace AstarPathfinding
             Vector3 end = _spawner.TreasurePosition;
 
             var finalPath = _aStar.FindPathSolution(start, end, _gridBuilder);
-            _pathDrawer.DrawPath(_gridBuilder.NodeArray, finalPath);
+            _pathDrawer.DrawPath(finalPath);
 
             await Task.Yield(); // simulate async
             return finalPath;
